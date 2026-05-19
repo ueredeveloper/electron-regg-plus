@@ -1,0 +1,32 @@
+[
+  {
+    "object": {
+      "id": 554,
+      "cep": "73255-902",
+      "bairro": "Itapoã",
+      "cidade": "Brasília",
+      "estado": {
+        "id": 1,
+        "descricao": "DF"
+      },
+      "logradouro": "Cond. Entre Lagos, Etapa 3, Conj. T, Casa 10"
+    },
+    "status": "sucesso",
+    "mensagem": "Endereço com id=554 criado com sucesso."
+  },
+  {
+    "object": {
+      "id": 556,
+      "cep": "15456-789",
+      "bairro": "Sobradinho",
+      "cidade": "Brasília",
+      "estado": {
+        "id": 1,
+        "descricao": "DF"
+      },
+      "logradouro": "Condomínio Entre Lagos, E 3"
+    },
+    "status": "sucesso",
+    "mensagem": "Endereço com id=556 criado com sucesso."
+  }
+]

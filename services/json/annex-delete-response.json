@@ -1,0 +1,15 @@
+[
+  {
+    "timestamp": "2026-05-17T11:09:27.333Z",
+    "id": 523,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 523,
+        "numero": "00197-00002477/2024-46"
+      },
+      "status": "sucesso",
+      "mensagem": "Anexo com id=523 deletado com sucesso."
+    }
+  }
+]

@@ -1,0 +1,126 @@
+[
+  {
+    "timestamp": "2026-05-15T19:59:14.353Z",
+    "id": 150,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 150
+      },
+      "status": "erro",
+      "mensagem": "update or delete on table \"usuario\" violates foreign key constraint \"fkt16c7a04pat7h049r26qti21y\" on table \"processo\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:07:18.291Z",
+    "id": 150,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 150
+      },
+      "status": "erro",
+      "mensagem": "update or delete on table \"usuario\" violates foreign key constraint \"fkt16c7a04pat7h049r26qti21y\" on table \"processo\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:07:26.982Z",
+    "id": 150,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 150
+      },
+      "status": "erro",
+      "mensagem": "update or delete on table \"usuario\" violates foreign key constraint \"fkt16c7a04pat7h049r26qti21y\" on table \"processo\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:17:04.365Z",
+    "id": 154,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 154
+      },
+      "status": "erro",
+      "mensagem": "update or delete on table \"usuario\" violates foreign key constraint \"fkt16c7a04pat7h049r26qti21y\" on table \"processo\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:19:47.925Z",
+    "id": 174,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 174
+      },
+      "status": "erro",
+      "mensagem": "update or delete on table \"usuario\" violates foreign key constraint \"fkt16c7a04pat7h049r26qti21y\" on table \"processo\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:30:56.265Z",
+    "id": 151,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 151
+      },
+      "status": "erro",
+      "mensagem": "update or delete on table \"usuario\" violates foreign key constraint \"fkt16c7a04pat7h049r26qti21y\" on table \"processo\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:46:38.800Z",
+    "id": 223,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 223
+      },
+      "status": "erro",
+      "mensagem": "update or delete on table \"usuario\" violates foreign key constraint \"fkt16c7a04pat7h049r26qti21y\" on table \"processo\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:47:34.180Z",
+    "id": 223,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 223
+      },
+      "status": "erro",
+      "mensagem": "update or delete on table \"usuario\" violates foreign key constraint \"fkt16c7a04pat7h049r26qti21y\" on table \"processo\""
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:09:16.955Z",
+    "id": 498,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 498,
+        "nome": "Cristiane Caldeira de Melo",
+        "cpfCnpj": "002.951.281-00"
+      },
+      "status": "sucesso",
+      "mensagem": "Usuário com id=498 deletado com sucesso."
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:29:19.765Z",
+    "id": 500,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 500,
+        "nome": "Crystiane Caldeira",
+        "cpfCnpj": "002.951.286-60"
+      },
+      "status": "sucesso",
+      "mensagem": "Usuário com id=500 deletado com sucesso."
+    }
+  }
+]

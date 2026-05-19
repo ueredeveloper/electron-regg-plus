@@ -1,0 +1,11 @@
+{
+  "id": 554,
+  "logradouro": "Cond. Entre Lagos, Etapa 3, Conj. T, Casa 10",
+  "bairro": "Itapoã",
+  "cep": "73255-902",
+  "cidade": "Brasília",
+  "estado": {
+    "id": 1,
+    "descricao": "DF"
+  }
+}

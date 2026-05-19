@@ -1,0 +1,78 @@
+[
+  {
+    "timestamp": "2026-05-15T20:20:02.141Z",
+    "id": 139,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar processo: update or delete on table \"processo\" violates foreign key constraint \"fk732r1hr3rj3enhv3xgtvin1k1\" on table \"documento\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T21:03:57.573Z",
+    "id": 116,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar processo: update or delete on table \"processo\" violates foreign key constraint \"fk732r1hr3rj3enhv3xgtvin1k1\" on table \"documento\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T21:07:43.844Z",
+    "id": 116,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar processo: update or delete on table \"processo\" violates foreign key constraint \"fk732r1hr3rj3enhv3xgtvin1k1\" on table \"documento\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T21:07:47.488Z",
+    "id": 116,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar processo: update or delete on table \"processo\" violates foreign key constraint \"fk732r1hr3rj3enhv3xgtvin1k1\" on table \"documento\""
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:08:46.830Z",
+    "id": 468,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 468,
+        "numero": "00197-00002477/2024-46",
+        "usuario": {
+          "id": 498,
+          "nome": "Cristiane Caldeira de Melo",
+          "cpfCnpj": "002.951.281-00"
+        }
+      },
+      "status": "sucesso",
+      "mensagem": "Processo com id=468 deletado com sucesso."
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:29:03.544Z",
+    "id": 470,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 470,
+        "numero": "00197-00002477/2024-46",
+        "usuario": {
+          "id": 211,
+          "nome": "Luiz Carlos Marques Fonseca ",
+          "cpfCnpj": "09930710159"
+        }
+      },
+      "status": "sucesso",
+      "mensagem": "Processo com id=470 deletado com sucesso."
+    }
+  }
+]

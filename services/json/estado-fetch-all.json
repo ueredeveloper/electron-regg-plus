@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "descricao": "DF"
+  },
+  {
+    "id": 2,
+    "descricao": "SP"
+  },
+  {
+    "id": 3,
+    "descricao": "BA"
+  },
+  {
+    "id": 4,
+    "descricao": "RJ"
+  },
+  {
+    "id": 5,
+    "descricao": "MG"
+  },
+  {
+    "id": 6,
+    "descricao": "RS"
+  },
+  {
+    "id": 7,
+    "descricao": "PR"
+  },
+  {
+    "id": 8,
+    "descricao": "SC"
+  },
+  {
+    "id": 9,
+    "descricao": "GO"
+  },
+  {
+    "id": 10,
+    "descricao": "PE"
+  },
+  {
+    "id": 11,
+    "descricao": "ES"
+  },
+  {
+    "id": 12,
+    "descricao": "MT"
+  },
+  {
+    "id": 13,
+    "descricao": "MS"
+  },
+  {
+    "id": 14,
+    "descricao": "TO"
+  },
+  {
+    "id": 15,
+    "descricao": "MA"
+  },
+  {
+    "id": 16,
+    "descricao": "PI"
+  },
+  {
+    "id": 17,
+    "descricao": "CE"
+  },
+  {
+    "id": 18,
+    "descricao": "RN"
+  },
+  {
+    "id": 19,
+    "descricao": "PB"
+  },
+  {
+    "id": 20,
+    "descricao": "AL"
+  },
+  {
+    "id": 21,
+    "descricao": "SE"
+  },
+  {
+    "id": 22,
+    "descricao": "AM"
+  },
+  {
+    "id": 23,
+    "descricao": "PA"
+  },
+  {
+    "id": 24,
+    "descricao": "AC"
+  },
+  {
+    "id": 25,
+    "descricao": "RO"
+  },
+  {
+    "id": 26,
+    "descricao": "RR"
+  },
+  {
+    "id": 27,
+    "descricao": "AP"
+  }
+]

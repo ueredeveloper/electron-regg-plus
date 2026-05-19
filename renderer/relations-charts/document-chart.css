@@ -1,0 +1,122 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  background: #0f172a;
+}
+
+#chart-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Overlay de confirmação de exclusão ──────────────────────────────────── */
+.dc-confirm-overlay {
+  display: none;   /* controlado via style.display no JS */
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.dc-confirm-box {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 300px;
+  max-width: 420px;
+}
+
+.dc-confirm-msg {
+  color: #e2e8f0;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-family: system-ui, sans-serif;
+}
+
+.dc-confirm-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ── Painel de ações (copiar / excluir) ─────────────────────────────────── */
+.dc-actions-panel {
+  display: none;
+  position: fixed;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 8px;
+  z-index: 50;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 190px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+}
+
+.dc-btn {
+  padding: 9px 20px;
+  border-radius: 5px;
+  border: none;
+  font-size: 14px;
+  font-family: system-ui, sans-serif;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  text-align: left;
+}
+
+.dc-btn:hover {
+  opacity: 0.85;
+}
+
+.dc-btn-cancel {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.dc-btn-copy {
+  background: #0f766e;
+  color: #fff;
+}
+
+.dc-btn-danger {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* ── Toast ───────────────────────────────────────────────────────────────── */
+.dc-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: system-ui, sans-serif;
+  color: #fff;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.dc-toast[hidden] {
+  display: none;
+}
+
+.dc-toast-ok {
+  background: #10b981;
+}
+
+.dc-toast-error {
+  background: #ef4444;
+}

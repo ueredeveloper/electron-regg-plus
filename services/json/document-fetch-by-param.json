@@ -1,0 +1,28 @@
+{
+  "id": 139,
+  "numero": "187118724",
+  "endereco": {
+    "id": 177,
+    "cep": "",
+    "bairro": "Brasília",
+    "cidade": "Brasília",
+    "estado": {
+      "id": 1,
+      "descricao": "DF"
+    },
+    "logradouro": "Núcleo Rural Taguatinga / Samambaia, Chácara 04 - Gatumé"
+  },
+  "processo": {
+    "id": 112,
+    "anexo": {
+      "id": 152,
+      "numero": "00197.00004461/2025-59"
+    },
+    "numero": "00197.00004461/2025-59"
+  },
+  "numeroSei": "187118724",
+  "tipoDocumento": {
+    "id": 3,
+    "descricao": "Requerimento"
+  }
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "timestamp": "2026-05-18T23:25:54.294Z",
+    "email": "ueredeveloper@gmail.com",
+    "status": "network_error",
+    "error": "fetch failed"
+  },
+  {
+    "timestamp": "2026-05-18T23:26:03.017Z",
+    "email": "ueredeveloper@gmail.com",
+    "status": "network_error",
+    "error": "fetch failed"
+  },
+  {
+    "timestamp": "2026-05-19T18:37:09.059Z",
+    "email": "ueredeveloper@gmail.com",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6InVlcmVkZXZlbG9wZXJAZ21haWwuY29tIiwiaWF0IjoxNzc5MjE1ODI5LCJleHAiOjE3NzkyMzAyMjl9.d1QqDyA12CueSeNoM9HjYWdHUc9JhOuImxLa6NlWTBw",
+      "colaborador": {
+        "id": "1",
+        "email": "ueredeveloper@gmail.com"
+      }
+    }
+  }
+]

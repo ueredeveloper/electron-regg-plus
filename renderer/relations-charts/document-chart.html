@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Documento - Visão Geral</title>
+  <link rel="stylesheet" href="document-chart.css">
+</head>
+<body>
+  <div id="chart-container"></div>
+
+  <div id="dc-confirm" class="dc-confirm-overlay">
+    <div class="dc-confirm-box">
+      <p id="dc-confirm-msg" class="dc-confirm-msg"></p>
+      <div class="dc-confirm-btns">
+        <button id="dc-confirm-cancel" class="dc-btn dc-btn-cancel">Cancelar</button>
+        <button id="dc-confirm-ok" class="dc-btn dc-btn-danger">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="dc-actions" class="dc-actions-panel"></div>
+
+  <div id="dc-toast" class="dc-toast" hidden></div>
+
+  <script src="../../node_modules/echarts/dist/echarts.min.js"></script>
+  <script src="document-chart.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+[
+  {
+    "timestamp": "2026-05-15T20:17:35.708Z",
+    "id": 184,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar endereço: update or delete on table \"endereco\" violates foreign key constraint \"fkaybqkxn0p48byfujubussbh38\" on table \"documento\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:19:37.337Z",
+    "id": 206,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar endereço: update or delete on table \"endereco\" violates foreign key constraint \"fkaybqkxn0p48byfujubussbh38\" on table \"documento\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:47:04.360Z",
+    "id": 264,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar endereço: update or delete on table \"endereco\" violates foreign key constraint \"fkaybqkxn0p48byfujubussbh38\" on table \"documento\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:58:52.376Z",
+    "id": 181,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar endereço: update or delete on table \"interferencia\" violates foreign key constraint \"fknulk7xa33ecuq83av4ue9jwv3\" on table \"demanda\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T21:00:31.374Z",
+    "id": 181,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar endereço: update or delete on table \"endereco\" violates foreign key constraint \"fkaybqkxn0p48byfujubussbh38\" on table \"documento\""
+    }
+  },
+  {
+    "timestamp": "2026-05-15T21:07:34.994Z",
+    "id": 181,
+    "status": 201,
+    "body": {
+      "object": null,
+      "status": "erro",
+      "mensagem": "Erro ao deletar endereço: update or delete on table \"endereco\" violates foreign key constraint \"fkaybqkxn0p48byfujubussbh38\" on table \"documento\""
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:08:23.993Z",
+    "id": 554,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 554,
+        "cep": "73255-902",
+        "bairro": "Itapoã",
+        "cidade": "Brasília",
+        "estado": {
+          "id": 1,
+          "descricao": "DF"
+        },
+        "logradouro": "Cond. Entre Lagos, Etapa 3, Conj. T, Casa 10"
+      },
+      "status": "sucesso",
+      "mensagem": "Endereço com id=554 deletado com sucesso."
+    }
+  }
+]

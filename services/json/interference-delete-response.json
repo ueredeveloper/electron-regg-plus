@@ -1,0 +1,98 @@
+[
+  {
+    "timestamp": "2026-05-15T20:17:15.823Z",
+    "id": 111,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 111
+      },
+      "status": "sucesso",
+      "mensagem": "Interferência 111 e seus registros relacionados foram deletados com sucesso."
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:19:32.514Z",
+    "id": 132,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 132
+      },
+      "status": "sucesso",
+      "mensagem": "Interferência 132 e seus registros relacionados foram deletados com sucesso."
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:43:16.541Z",
+    "id": 189,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 189
+      },
+      "status": "sucesso",
+      "mensagem": "Interferência 189 e seus registros relacionados foram deletados com sucesso."
+    }
+  },
+  {
+    "timestamp": "2026-05-15T20:58:47.731Z",
+    "id": 106,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 106
+      },
+      "status": "sucesso",
+      "mensagem": "Interferência 106 e seus registros relacionados foram deletados com sucesso."
+    }
+  },
+  {
+    "timestamp": "2026-05-15T21:00:20.084Z",
+    "id": 317,
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 317
+      },
+      "status": "sucesso",
+      "mensagem": "Interferência 317 e seus registros relacionados foram deletados com sucesso."
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:08:16.089Z",
+    "id": "519",
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 519
+      },
+      "status": "sucesso",
+      "mensagem": "Interferência 519 e seus registros relacionados foram deletados com sucesso."
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:28:53.527Z",
+    "id": "521",
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 521
+      },
+      "status": "sucesso",
+      "mensagem": "Interferência 521 e seus registros relacionados foram deletados com sucesso."
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:28:54.890Z",
+    "id": "522",
+    "status": 201,
+    "body": {
+      "object": {
+        "id": 522
+      },
+      "status": "sucesso",
+      "mensagem": "Interferência 522 e seus registros relacionados foram deletados com sucesso."
+    }
+  }
+]

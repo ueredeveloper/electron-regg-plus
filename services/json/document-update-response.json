@@ -1,0 +1,33 @@
+[
+  {
+    "status": "sucesso",
+    "mensagem": "Documento salvo com sucesso!",
+    "object": {
+      "id": 540,
+      "numero": "146689191",
+      "numeroSei": "146689191",
+      "processo": {
+        "id": 470,
+        "numero": "00197-00002477/2024-46",
+        "usuario": {
+          "id": 211,
+          "nome": "Luiz Carlos Marques Fonseca ",
+          "cpfCnpj": "09930710159"
+        },
+        "anexo": {
+          "id": 525,
+          "numero": "00197-00002477/2024-46"
+        }
+      },
+      "endereco": {
+        "id": 556,
+        "logradouro": "Condomínio Entre Lagos, E 3",
+        "bairro": "Sobradinho"
+      },
+      "tipoDocumento": {
+        "id": 3,
+        "descricao": "Requerimento"
+      }
+    }
+  }
+]

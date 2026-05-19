@@ -1,0 +1,21 @@
+[
+  {
+    "object": {
+      "id": 525,
+      "numero": null,
+      "processos": [
+        {
+          "id": 470,
+          "numero": "00197-00002477/2024-46",
+          "usuario": {
+            "id": 211,
+            "nome": "Luiz Carlos Marques Fonseca ",
+            "cpfCnpj": "09930710159"
+          }
+        }
+      ]
+    },
+    "status": "sucesso",
+    "mensagem": "Anexo editado com sucesso."
+  }
+]

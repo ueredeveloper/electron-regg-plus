@@ -1,0 +1,313 @@
+{
+  "estado": {
+    "1": {
+      "id": 1,
+      "descricao": "DF",
+      "enderecos": []
+    },
+    "2": {
+      "id": 2,
+      "descricao": "SP",
+      "enderecos": []
+    },
+    "3": {
+      "id": 3,
+      "descricao": "BA",
+      "enderecos": []
+    },
+    "4": {
+      "id": 4,
+      "descricao": "RJ",
+      "enderecos": []
+    },
+    "5": {
+      "id": 5,
+      "descricao": "MG",
+      "enderecos": []
+    },
+    "6": {
+      "id": 6,
+      "descricao": "RS",
+      "enderecos": []
+    },
+    "7": {
+      "id": 7,
+      "descricao": "PR",
+      "enderecos": []
+    },
+    "8": {
+      "id": 8,
+      "descricao": "SC",
+      "enderecos": []
+    },
+    "9": {
+      "id": 9,
+      "descricao": "GO",
+      "enderecos": []
+    },
+    "10": {
+      "id": 10,
+      "descricao": "PE",
+      "enderecos": []
+    },
+    "11": {
+      "id": 11,
+      "descricao": "ES",
+      "enderecos": []
+    },
+    "12": {
+      "id": 12,
+      "descricao": "MT",
+      "enderecos": []
+    },
+    "13": {
+      "id": 13,
+      "descricao": "MS",
+      "enderecos": []
+    },
+    "14": {
+      "id": 14,
+      "descricao": "TO",
+      "enderecos": []
+    },
+    "15": {
+      "id": 15,
+      "descricao": "MA",
+      "enderecos": []
+    },
+    "16": {
+      "id": 16,
+      "descricao": "PI",
+      "enderecos": []
+    },
+    "17": {
+      "id": 17,
+      "descricao": "CE",
+      "enderecos": []
+    },
+    "18": {
+      "id": 18,
+      "descricao": "RN",
+      "enderecos": []
+    },
+    "19": {
+      "id": 19,
+      "descricao": "PB",
+      "enderecos": []
+    },
+    "20": {
+      "id": 20,
+      "descricao": "AL",
+      "enderecos": []
+    },
+    "21": {
+      "id": 21,
+      "descricao": "SE",
+      "enderecos": []
+    },
+    "22": {
+      "id": 22,
+      "descricao": "AM",
+      "enderecos": []
+    },
+    "23": {
+      "id": 23,
+      "descricao": "PA",
+      "enderecos": []
+    },
+    "24": {
+      "id": 24,
+      "descricao": "AC",
+      "enderecos": []
+    },
+    "25": {
+      "id": 25,
+      "descricao": "RO",
+      "enderecos": []
+    },
+    "26": {
+      "id": 26,
+      "descricao": "RR",
+      "enderecos": []
+    },
+    "27": {
+      "id": 27,
+      "descricao": "AP",
+      "enderecos": []
+    }
+  },
+  "tipoAto": {
+    "1": {
+      "id": 1,
+      "descricao": "Despacho"
+    },
+    "2": {
+      "id": 2,
+      "descricao": "Portaria"
+    },
+    "3": {
+      "id": 3,
+      "descricao": "Despacho"
+    },
+    "4": {
+      "id": 4,
+      "descricao": "Registro"
+    },
+    "5": {
+      "id": 5,
+      "descricao": "Resolução"
+    },
+    "6": {
+      "id": 6,
+      "descricao": "Resolução ANA"
+    },
+    "7": {
+      "id": 7,
+      "descricao": "Portaria DNAEE"
+    }
+  },
+  "tipoPoco": {
+    "1": {
+      "id": 1,
+      "descricao": "Manual",
+      "documentos": []
+    },
+    "2": {
+      "id": 2,
+      "descricao": "Tubular Raso",
+      "documentos": []
+    },
+    "3": {
+      "id": 3,
+      "descricao": "Tubular Profundo",
+      "documentos": []
+    }
+  },
+  "subsistema": {},
+  "tipoOutorga": {
+    "1": {
+      "id": 1,
+      "descricao": "Outorga"
+    },
+    "2": {
+      "id": 2,
+      "descricao": "Outorga Prévia"
+    },
+    "3": {
+      "id": 3,
+      "descricao": "Registro"
+    }
+  },
+  "localCaptacao": {
+    "1": {
+      "id": 1,
+      "descricao": "Nascente"
+    },
+    "2": {
+      "id": 2,
+      "descricao": "Rio"
+    },
+    "3": {
+      "id": 3,
+      "descricao": "Reservatório"
+    },
+    "4": {
+      "id": 4,
+      "descricao": "Canal"
+    },
+    "5": {
+      "id": 5,
+      "descricao": "Lago Natural"
+    }
+  },
+  "subtipoOutorga": {
+    "1": {
+      "id": 1,
+      "descricao": "Renovação"
+    },
+    "2": {
+      "id": 2,
+      "descricao": "Modificação"
+    },
+    "3": {
+      "id": 3,
+      "descricao": "Transferência"
+    },
+    "4": {
+      "id": 4,
+      "descricao": "Transferência"
+    },
+    "5": {
+      "id": 5,
+      "descricao": "Suspensão/Revogação"
+    },
+    "6": {
+      "id": 6,
+      "descricao": ""
+    }
+  },
+  "situacaoProcesso": {
+    "1": {
+      "id": 1,
+      "descricao": "Arquivado"
+    },
+    "2": {
+      "id": 2,
+      "descricao": "Em Análise"
+    },
+    "3": {
+      "id": 3,
+      "descricao": "Outorgado"
+    },
+    "4": {
+      "id": 4,
+      "descricao": "Vencido"
+    },
+    "5": {
+      "id": 5,
+      "descricao": "Arquivado (CNRH 16)"
+    },
+    "6": {
+      "id": 6,
+      "descricao": "Pendência"
+    },
+    "7": {
+      "id": 7,
+      "descricao": "Indeferido"
+    },
+    "8": {
+      "id": 8,
+      "descricao": "Revogado"
+    }
+  },
+  "tipoInterferencia": {
+    "1": {
+      "id": 1,
+      "descricao": "Superficial"
+    },
+    "2": {
+      "id": 2,
+      "descricao": "Subterrânea"
+    },
+    "3": {
+      "id": 3,
+      "descricao": "Lançamento de Águas Pluviais"
+    },
+    "4": {
+      "id": 4,
+      "descricao": "Canal"
+    },
+    "5": {
+      "id": 5,
+      "descricao": "Caminhão Pipa"
+    },
+    "6": {
+      "id": 6,
+      "descricao": "Lançamento de Efluentes"
+    },
+    "7": {
+      "id": 7,
+      "descricao": "Barragem"
+    }
+  }
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<!-- 
+ * @nome Parecer de Outorga De Direito de Uso
+ * @descricao Arquivo principal .html
+ * @arquivo index.html
+ * @diretorio 4
+ * @id 
+ */
+ -->
+<head>
+<title>Parecer de Outorga Prévia</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="script.js" defer></script>
+<script src="./subject-view.js"></script>
+<script src="./object-view.js"></script>
+<script src="./legal-basis-view.js"></script>
+<script src="./analyse-view.js"></script>
+<script src="./water-data-view.js"></script>
+<script src="./conclusion-view.js"></script>
+<script src="../shared/signature-view.js"></script>
+
+<!-- Arquivos compartilhados entre os temas -->
+
+<script src="../utils/script.js"></script>
+<!-- Visualizações Compartilhadas -->
+<script src="../actions/script.js"></script>
+
+<script src="../shared/well-info-view.js"></script>
+<script src="../shared/purpouse-legal-basis-view.js"></script>
+<script src="../shared/purpouse-requested-table-view.js"></script>
+<script src="../shared/purpouse-authorized-table-view.js"></script>
+<script src="../shared/geographic-table-view.js"></script>
+<script src="../shared/limits-table-view.js"></script>
+
+<!-- pastas compartilhadas pelos templates -->
+<script src="../models/interferencia-model.js"></script>
+<script src="../models/documento-model.js"></script>
+<script src="../models/endereco-model.js"></script>
+<script src="../models/usuario-model.js"></script>
+<script src="../models/demanda-model.js"></script>
+<script src="../models/tipo-poco-model.js"></script>
+<script src="../models/finalidade-model.js"></script>
+
+<style>
+body {
+	line-height: 1.6;
+	margin: 20px;
+	padding: 20px;
+	color: #333;
+}
+
+h1 {
+	text-align: center;
+	font-size: 24px;
+}
+
+h2 {
+	margin-top: 20px;
+	font-size: 20px;
+}
+
+h3 {
+	margin-top: 15px;
+	font-size: 18px;
+}
+
+p {
+	text-align: justify;
+	margin: 10px 0;
+}
+
+ul {
+	margin: 10px 0;
+	padding-left: 20px;
+}
+
+li {
+	margin: 5px 0;
+}
+
+.highlight {
+	background-color: #e9ecef; /* Cinza claro */
+	padding: 5px;
+	border-radius: 3px;
+}
+
+.signature {
+	text-align: right;
+	margin-top: 40px;
+}
+
+.section {
+	padding: 15px;
+	background-color: #ffffff; /* Branco */
+}
+
+.right-align {
+	text-align: right; /* Alinha o texto à direita */
+	margin-bottom: 20px; /* Espaço abaixo do parágrafo */
+}
+</style>
+
+</head>
+
+<body>
+	<div id="app" style="margin-left: 10px; margin-right: 10px;"></div>
+	<div id="actions"></div>
+</body>
+</html>

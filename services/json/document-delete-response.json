@@ -1,0 +1,48 @@
+[
+  {
+    "timestamp": "2026-05-15T21:07:06.729Z",
+    "id": 143,
+    "status": 201,
+    "body": {
+      "status": "sucesso",
+      "mensagem": "Documento 143 e seus relacionamentos foram deletados com sucesso.",
+      "object": {
+        "id": 143
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-15T21:07:39.592Z",
+    "id": 143,
+    "status": 201,
+    "body": {
+      "status": "erro",
+      "mensagem": "Documento 143 não encontrado.",
+      "object": null
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:07:55.968Z",
+    "id": 538,
+    "status": 201,
+    "body": {
+      "status": "sucesso",
+      "mensagem": "Documento 538 e seus relacionamentos foram deletados com sucesso.",
+      "object": {
+        "id": 538
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-17T11:28:41.539Z",
+    "id": 540,
+    "status": 201,
+    "body": {
+      "status": "sucesso",
+      "mensagem": "Documento 540 e seus relacionamentos foram deletados com sucesso.",
+      "object": {
+        "id": 540
+      }
+    }
+  }
+]

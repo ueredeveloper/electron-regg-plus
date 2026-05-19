@@ -1,0 +1,20 @@
+[
+  {
+    "object": {
+      "id": 498,
+      "nome": "Cristiane Caldeira de Melo",
+      "cpfCnpj": "002.951.281-00"
+    },
+    "status": "sucesso",
+    "mensagem": "Usuário com id=498 criado com sucesso."
+  },
+  {
+    "object": {
+      "id": 500,
+      "nome": "Crystiane Caldeira",
+      "cpfCnpj": "002.951.286-60"
+    },
+    "status": "sucesso",
+    "mensagem": "Usuário com id=500 criado com sucesso."
+  }
+]

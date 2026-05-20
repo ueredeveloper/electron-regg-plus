@@ -5,9 +5,14 @@ const fs   = require('fs')
 const _GH_REPO = 'ueredeveloper/electron-regg-plus'
 
 async function _checkGitHubRelease() {
-  const res = await fetch(`https://api.github.com/repos/${_GH_REPO}/releases/latest`)
+  // /releases/latest retorna 404 se não existir nenhuma release publicada;
+  // buscamos a lista e pegamos a primeira não-draft e não-prerelease.
+  const res = await fetch(`https://api.github.com/repos/${_GH_REPO}/releases?per_page=10`)
   if (!res.ok) throw new Error(`GitHub API ${res.status}`)
-  return res.json()
+  const list = await res.json()
+  const release = list.find(r => !r.draft && !r.prerelease)
+  if (!release) throw new Error('Nenhuma release publicada encontrada.')
+  return release
 }
 
 // Impede que o DPI scaling do Windows (125%, 150% etc.) amplie a UI do app.

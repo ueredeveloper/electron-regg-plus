@@ -15,7 +15,8 @@
     "publish": {
       "provider": "github",
       "owner": "ueredeveloper",
-      "repo": "electron-regg-plus"
+      "repo": "electron-regg-plus",
+      "releaseType": "release"
     },
     "files": [
       "**/*",

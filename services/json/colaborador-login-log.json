@@ -259,5 +259,19 @@
         "admin": true
       }
     }
+  },
+  {
+    "timestamp": "2026-05-20T17:18:18.508Z",
+    "email": "fabmus1@gmail.com",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExIiwiZW1haWwiOiJmYWJtdXMxQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzc5Mjk3NTY3LCJleHAiOjE3NzkzMTE5Njd9.Sm0qBC29v2AmtHO4o_eYUAhYMQ-wnWlFj2zXqnPYxnQ",
+      "colaborador": {
+        "id": "11",
+        "email": "fabmus1@gmail.com",
+        "admin": false
+      }
+    }
   }
 ]

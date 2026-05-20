@@ -1770,6 +1770,7 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 13px;
   padding: 8px 12px;
@@ -1834,6 +1835,7 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-top: 20px;
 }
 
 .aa-disp-chart-toolbar {

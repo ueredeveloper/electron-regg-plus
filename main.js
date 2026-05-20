@@ -247,6 +247,17 @@ ipcMain.handle('app:checkUpdate', async () => {
   }
 })
 
+autoUpdater.on('update-available', (info) => {
+  const win = BrowserWindow.getAllWindows()[0]
+  if (win) {
+    win.webContents.send('app:update-available', {
+      type:    'update',
+      version: info.version,
+      message: `Nova versão disponível: v${info.version}. Baixando…`
+    })
+  }
+})
+
 autoUpdater.on('update-downloaded', () => {
   dialog.showMessageBox({
     type:    'info',
@@ -256,6 +267,10 @@ autoUpdater.on('update-downloaded', () => {
   }).then(({ response }) => {
     if (response === 0) autoUpdater.quitAndInstall()
   })
+})
+
+autoUpdater.on('error', (err) => {
+  console.error('[autoUpdater] erro:', err?.message ?? err)
 })
 
 /* ── App lifecycle ─────────────────────────────────────────────────────────── */

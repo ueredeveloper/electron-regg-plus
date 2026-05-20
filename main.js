@@ -3,7 +3,7 @@ const path = require('path')
 const fs   = require('fs')
 const { autoUpdater } = require('electron-updater')
 
-autoUpdater.autoDownload    = true
+autoUpdater.autoDownload         = false
 autoUpdater.autoInstallOnAppQuit = false
 
 // Impede que o DPI scaling do Windows (125%, 150% etc.) amplie a UI do app.
@@ -236,14 +236,18 @@ ipcMain.handle('app:checkUpdate', async () => {
   if (!app.isPackaged) return { type: 'ok', message: 'Modo de desenvolvimento.' }
   try {
     const result = await autoUpdater.checkForUpdates()
-    const latest = result?.updateInfo?.version
+    const latest  = result?.updateInfo?.version
     const current = app.getVersion()
     if (latest && latest !== current) {
+      // com autoDownload=false, dispara o download manualmente
+      autoUpdater.downloadUpdate().catch(() => {})
       return { type: 'update', version: latest, message: `Nova versão disponível: v${latest}. Baixando…` }
     }
     return { type: 'ok', message: `Você está usando a versão mais recente (v${current}).` }
-  } catch {
-    return { type: 'error', message: 'Não foi possível verificar atualizações. Verifique sua conexão.' }
+  } catch (err) {
+    const detail = err?.message ?? String(err)
+    console.error('[app:checkUpdate]', detail)
+    return { type: 'error', message: `Não foi possível verificar atualizações. ${detail}` }
   }
 })
 

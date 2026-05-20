@@ -1,10 +1,14 @@
-const { app, BrowserWindow, ipcMain, screen, shell, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, screen, shell } = require('electron')
 const path = require('path')
 const fs   = require('fs')
-const { autoUpdater } = require('electron-updater')
 
-autoUpdater.autoDownload         = false
-autoUpdater.autoInstallOnAppQuit = false
+const _GH_REPO = 'ueredeveloper/electron-regg-plus'
+
+async function _checkGitHubRelease() {
+  const res = await fetch(`https://api.github.com/repos/${_GH_REPO}/releases/latest`)
+  if (!res.ok) throw new Error(`GitHub API ${res.status}`)
+  return res.json()
+}
 
 // Impede que o DPI scaling do Windows (125%, 150% etc.) amplie a UI do app.
 // O Chromium renderiza em pixels físicos 1:1, ignorando a escala do SO.
@@ -106,7 +110,21 @@ function createWindow() {
   win.once('ready-to-show', () => {
     win.maximize()
     if (app.isPackaged) {
-      setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 4000)
+      setTimeout(async () => {
+        try {
+          const release  = await _checkGitHubRelease()
+          const latest   = release.tag_name?.replace(/^v/, '')
+          const current  = app.getVersion()
+          if (latest && latest !== current) {
+            const asset = release.assets?.find(a => a.name.endsWith('.exe'))
+            const url   = asset?.browser_download_url ?? release.html_url
+            win.webContents.send('app:update-available', {
+              type: 'update', version: latest,
+              message: `Nova versão disponível: v${latest}. Clique para baixar.`, url
+            })
+          }
+        } catch { /* silencioso em background */ }
+      }, 4000)
     }
   })
 }
@@ -235,13 +253,14 @@ ipcMain.handle('app:openExternal', (_event, url) => shell.openExternal(url))
 ipcMain.handle('app:checkUpdate', async () => {
   if (!app.isPackaged) return { type: 'ok', message: 'Modo de desenvolvimento.' }
   try {
-    const result = await autoUpdater.checkForUpdates()
-    const latest  = result?.updateInfo?.version
-    const current = app.getVersion()
+    const release  = await _checkGitHubRelease()
+    const latest   = release.tag_name?.replace(/^v/, '')
+    const current  = app.getVersion()
     if (latest && latest !== current) {
-      // com autoDownload=false, dispara o download manualmente
-      autoUpdater.downloadUpdate().catch(() => {})
-      return { type: 'update', version: latest, message: `Nova versão disponível: v${latest}. Baixando…` }
+      const asset = release.assets?.find(a => a.name.endsWith('.exe'))
+      const url   = asset?.browser_download_url ?? release.html_url
+      return { type: 'update', version: latest, url,
+               message: `Nova versão disponível: v${latest}. Clique para baixar.` }
     }
     return { type: 'ok', message: `Você está usando a versão mais recente (v${current}).` }
   } catch (err) {
@@ -249,32 +268,6 @@ ipcMain.handle('app:checkUpdate', async () => {
     console.error('[app:checkUpdate]', detail)
     return { type: 'error', message: `Não foi possível verificar atualizações. ${detail}` }
   }
-})
-
-autoUpdater.on('update-available', (info) => {
-  const win = BrowserWindow.getAllWindows()[0]
-  if (win) {
-    win.webContents.send('app:update-available', {
-      type:    'update',
-      version: info.version,
-      message: `Nova versão disponível: v${info.version}. Baixando…`
-    })
-  }
-})
-
-autoUpdater.on('update-downloaded', () => {
-  dialog.showMessageBox({
-    type:    'info',
-    title:   'Atualização pronta',
-    message: 'Uma nova versão foi baixada. O aplicativo será reiniciado para instalar.',
-    buttons: ['Reiniciar agora', 'Mais tarde']
-  }).then(({ response }) => {
-    if (response === 0) autoUpdater.quitAndInstall()
-  })
-})
-
-autoUpdater.on('error', (err) => {
-  console.error('[autoUpdater] erro:', err?.message ?? err)
 })
 
 /* ── App lifecycle ─────────────────────────────────────────────────────────── */

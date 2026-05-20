@@ -121,6 +121,23 @@ function _showPoint(lat, lng) {
   placeMarker(lat, lng)
 }
 
+/* Botão de conversor de coordenadas: expande o mapa e rola até o conversor */
+document.addEventListener('iv:open-coord-converter', () => {
+  const ws = document.querySelector('.workspace')
+  if (!ws.classList.contains('map-expanded')) {
+    _lastOpenView =
+      _DRAWER_VIEWS.find(({ id }) => document.getElementById(id)?.classList.contains('open'))?.view
+      ?? (!document.getElementById('aaOverlay')?.hidden ? AdministrativeActsView : null)
+    ;[AddressView, InterferenceView, UserView, ProcessView, AnnexView, AdministrativeActsView]
+      .forEach(v => v.isMounted() && v.close())
+    ws.classList.add('map-expanded')
+    setTimeout(() => map.invalidateSize({ animate: false }), 370)
+  }
+  setTimeout(() => {
+    document.getElementById('coord-converter')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  }, 400)
+})
+
 /* InterferenceView e conversores emitem este evento para navegar ao ponto */
 document.addEventListener('interference:goto', (e) => {
   const { lat, lng } = e.detail

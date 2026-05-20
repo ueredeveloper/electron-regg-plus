@@ -454,7 +454,7 @@ const InterferenceDetails = (() => {
     tr.querySelector('.id-calc-btn').addEventListener('click', () => {
       const qtd  = parseFloat(tr.querySelector('.id-fin-qtd').value)  || 0
       const vtot = parseFloat(tr.querySelector('.id-fin-vtot').value) || 0
-      tr.querySelector('.id-fin-cons').value = qtd * vtot
+      tr.querySelector('.id-fin-cons').value = (qtd * vtot).toFixed(2)
       _updateFinTotal(tab)
     })
 
@@ -515,7 +515,9 @@ const InterferenceDetails = (() => {
 
   function _updateFinTotal(tab) {
     const sum = _getFinTotal(tab)
-    _el(`idFin${tab}Sum`).textContent = sum ? sum.toLocaleString('pt-BR') : '—'
+    _el(`idFin${tab}Sum`).textContent = sum
+      ? sum.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      : '—'
   }
 
   function _getFinTotal(tab) {
@@ -605,11 +607,11 @@ const InterferenceDetails = (() => {
     const action = btn.dataset.action
 
     if (action === 'vazao-all') {
-      const total = _getFinTotal(tab)
+      const total = parseFloat(_getFinTotal(tab).toFixed(2))
       table.querySelectorAll('[data-field="vazao"]').forEach(inp => { inp.value = total })
 
     } else if (action === 'vazao-dry') {
-      const total = _getFinTotal(tab)
+      const total = parseFloat(_getFinTotal(tab).toFixed(2))
       table.querySelectorAll('[data-field="vazao"]').forEach(inp => {
         inp.value = _CHUVA.has(+inp.dataset.mes) ? 0 : total
       })

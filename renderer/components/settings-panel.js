@@ -45,8 +45,10 @@ const SettingsPanel = (() => {
     _createPanel()
     _bindCloseBtn()
     _bindThemeButtons()
+    _bindFontButtons()
     _bindUpdateButton()
     _loadSavedTheme()
+    _loadSavedFontSize()
     _loadVersion()
     _listenAutoUpdate()
 
@@ -113,6 +115,13 @@ const SettingsPanel = (() => {
           `).join('')}
         </div>
 
+        <p class="settings-section-label" style="margin-top:28px">Tamanho de Fonte</p>
+        <div class="settings-font-sizes" id="settingsFontSizes">
+          <button type="button" class="settings-font-btn" data-size="12">A <small>12</small></button>
+          <button type="button" class="settings-font-btn" data-size="14">A <small>14</small></button>
+          <button type="button" class="settings-font-btn" data-size="16">A <small>16</small></button>
+        </div>
+
         <p class="settings-section-label" style="margin-top:28px">Colaboradores</p>
         <div class="settings-colaboradores" id="settingsColaboradores">
           <p class="settings-colab-loading" id="settingsColabLoading">Carregando...</p>
@@ -169,6 +178,48 @@ const SettingsPanel = (() => {
     })
   }
 
+  function _bindFontButtons() {
+    _el('settingsFontSizes').querySelectorAll('.settings-font-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const size = btn.dataset.size
+        _applyFontSize(size)
+        _markActiveFont(size)
+        _persistFontSize(size)
+      })
+    })
+  }
+
+  function _applyFontSize(size) {
+    const zoom = { '12': '0.90', '14': '1', '16': '1.15' }
+    document.documentElement.style.zoom = zoom[String(size)] || '1'
+  }
+
+  function _markActiveFont(size) {
+    _el('settingsFontSizes')?.querySelectorAll('.settings-font-btn').forEach(btn => {
+      btn.classList.toggle('settings-font-btn--active', btn.dataset.size === String(size))
+    })
+  }
+
+  async function _persistFontSize(size) {
+    localStorage.setItem('reegg-font-size', String(size))
+    try {
+      const s = await window.appService.loadSettings()
+      await window.appService.saveSettings({ ...s, fontSize: String(size) })
+    } catch { }
+  }
+
+  async function _loadSavedFontSize() {
+    let size = '14'
+    try {
+      const s = await window.appService.loadSettings()
+      size = s?.fontSize || localStorage.getItem('reegg-font-size') || '14'
+    } catch {
+      size = localStorage.getItem('reegg-font-size') || '14'
+    }
+    _applyFontSize(size)
+    _markActiveFont(size)
+  }
+
   /**
    * @description Aplica o tema ao elemento `<html>` via classe CSS.
    * @param {string} themeId
@@ -195,8 +246,9 @@ const SettingsPanel = (() => {
   async function _persistTheme(themeId) {
     localStorage.setItem('reegg-theme', themeId)
     try {
-      await window.appService.saveSettings({ theme: themeId })
-    } catch { /* ambiente sem IPC ignora silenciosamente */ }
+      const s = await window.appService.loadSettings()
+      await window.appService.saveSettings({ ...s, theme: themeId })
+    } catch { }
   }
 
   /**

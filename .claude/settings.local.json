@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Move-Item -Path \"c:\\\\workspace\\\\electron-regg-plus\\\\assets\\\\icon_new.ico\" -Destination \"c:\\\\workspace\\\\electron-regg-plus\\\\assets\\\\icon.ico\" -Force)"
+    ]
+  }
+}

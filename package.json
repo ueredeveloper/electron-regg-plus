@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
-    "dist": "set CSC_IDENTITY_AUTO_DISCOVERY=false && electron-builder --win portable --publish always"
+    "dist": "node build.js"
   },
   "build": {
     "appId": "com.ueredeveloper.reegg",

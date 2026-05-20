@@ -23,5 +23,18 @@
         "email": "ueredeveloper@gmail.com"
       }
     }
+  },
+  {
+    "timestamp": "2026-05-20T10:14:54.767Z",
+    "email": "ueredeveloper@gmail.com",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6InVlcmVkZXZlbG9wZXJAZ21haWwuY29tIiwiaWF0IjoxNzc5MjcyMTY5LCJleHAiOjE3NzkyODY1Njl9.uuiVljDprWmYp3ub-wADEh8A0la0vXQOIg31qIYNXx0",
+      "colaborador": {
+        "id": "1",
+        "email": "ueredeveloper@gmail.com"
+      }
+    }
   }
 ]

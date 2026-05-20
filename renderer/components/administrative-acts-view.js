@@ -1,14 +1,8 @@
 /**
  * @file administrative-acts-view.js
- * @description Tela modal de geração de Atos Administrativos.
- * Sobrepõe toda a aplicação (position: fixed; top: var(--topbar-h); inset-inline: 0; bottom: 0).
- *
- * Aba "Documento":
- *  - Exibe Número, SEI e endereço do documento atual (somente leitura).
- *  - Select de interferência (busca por logradouro via fetchRawByKeyword).
- *  - Select de usuário (busca pelo ID do documento via fetchByDocumentId).
- *  - Select de modelo (6 templates fixos indexados por diretório).
- *  - <iframe> que renderiza o modelo e é alimentado via contentWindow após o carregamento.
+ * @description Tela modal com duas abas:
+ *   - Atos Administrativos: geração de documentos via templates.
+ *   - Análise de Disponibilidade: análise de outorga por coordenada.
  */
 const AdministrativeActsView = (() => {
   let _mounted  = false
@@ -16,6 +10,7 @@ const AdministrativeActsView = (() => {
   let _interferences = []
   let _users         = []
   let _selectedInterference = null
+  let _activeTab = 'atos'
 
   const _TIPO_POCO_MAP = { 1: 'Manual', 2: 'Tubular Raso', 3: 'Tubular Profundo' }
 
@@ -69,46 +64,61 @@ const AdministrativeActsView = (() => {
           </button>
         </div>
 
-        <div class="aa-controls">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Número</label>
-              <input type="text" id="aaDocNum" class="aa-readonly" readonly tabindex="-1">
-            </div>
-            <div class="form-group">
-              <label>SEI</label>
-              <input type="text" id="aaDocSei" class="aa-readonly" readonly tabindex="-1">
-            </div>
-            <div class="form-group grow">
-              <label>Endereço</label>
-              <input type="text" id="aaDocAddr" class="aa-readonly" readonly tabindex="-1">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group grow">
-              <label for="aaInterf">Interferência</label>
-              <select id="aaInterf">
-                <option value="">Selecione a interferência...</option>
-              </select>
-            </div>
-            <div class="form-group grow">
-              <label for="aaUser">Usuário</label>
-              <select id="aaUser">
-                <option value="">Selecione o usuário...</option>
-              </select>
-            </div>
-            <div class="form-group grow">
-              <label for="aaTemplate">Modelo</label>
-              <select id="aaTemplate">
-                <option value="">Selecione o modelo...</option>
-                ${_TEMPLATES.map(t => `<option value="${t.dir}">${t.nome}</option>`).join('')}
-              </select>
-            </div>
-          </div>
+        <div class="aa-tabs">
+          <button type="button" class="aa-tab aa-tab-active" id="aaTabAtosBtn">Atos Administrativos</button>
+          <button type="button" class="aa-tab" id="aaTabDispBtn">Análise de Disponibilidade</button>
         </div>
 
-        <iframe id="aaFrame" class="aa-frame" src=""></iframe>
+        <!-- Aba: Atos Administrativos -->
+        <div id="aaPanelAtos" class="aa-tab-panel">
+          <div class="aa-controls">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Número</label>
+                <input type="text" id="aaDocNum" class="aa-readonly" readonly tabindex="-1">
+              </div>
+              <div class="form-group">
+                <label>SEI</label>
+                <input type="text" id="aaDocSei" class="aa-readonly" readonly tabindex="-1">
+              </div>
+              <div class="form-group grow">
+                <label>Endereço</label>
+                <input type="text" id="aaDocAddr" class="aa-readonly" readonly tabindex="-1">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group grow">
+                <label for="aaInterf">Interferência</label>
+                <select id="aaInterf">
+                  <option value="">Selecione a interferência...</option>
+                </select>
+              </div>
+              <div class="form-group grow">
+                <label for="aaUser">Usuário</label>
+                <select id="aaUser">
+                  <option value="">Selecione o usuário...</option>
+                </select>
+              </div>
+              <div class="form-group grow">
+                <label for="aaTemplate">Modelo</label>
+                <select id="aaTemplate">
+                  <option value="">Selecione o modelo...</option>
+                  ${_TEMPLATES.map(t => `<option value="${t.dir}">${t.nome}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <iframe id="aaFrame" class="aa-frame" src=""></iframe>
+        </div>
+
+        <!-- Aba: Análise de Disponibilidade -->
+        <div id="aaPanelDisp" class="aa-tab-panel" hidden>
+          <div class="aa-disp-panel">
+            <p class="aa-disp-placeholder">Informe a coordenada para análise de disponibilidade de outorga.</p>
+          </div>
+        </div>
 
       </div>
     `
@@ -122,6 +132,9 @@ const AdministrativeActsView = (() => {
     _el('aaClose').addEventListener('click', close)
     _el('aaCopy').addEventListener('click', _copyHtml)
     _el('aaPrint').addEventListener('click', _print)
+
+    _el('aaTabAtosBtn').addEventListener('click', () => _switchTab('atos'))
+    _el('aaTabDispBtn').addEventListener('click', () => _switchTab('disp'))
 
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && !_el('aaOverlay').hidden) close()
@@ -150,6 +163,21 @@ const AdministrativeActsView = (() => {
   }
 
   /**
+   * @description Alterna entre as abas "atos" e "disp".
+   * @param {'atos'|'disp'} tab
+   */
+  function _switchTab(tab) {
+    _activeTab = tab
+    const isAtos = tab === 'atos'
+    _el('aaTabAtosBtn').classList.toggle('aa-tab-active', isAtos)
+    _el('aaTabDispBtn').classList.toggle('aa-tab-active', !isAtos)
+    _el('aaPanelAtos').hidden = !isAtos
+    _el('aaPanelDisp').hidden = isAtos
+    _el('aaCopy').style.display  = isAtos ? '' : 'none'
+    _el('aaPrint').style.display = isAtos ? '' : 'none'
+  }
+
+  /**
    * @description Abre o overlay, lê os dados da tela principal e carrega os selects.
    */
   async function open() {
@@ -166,6 +194,8 @@ const AdministrativeActsView = (() => {
     _interferences        = []
     _users                = []
     _selectedInterference = null
+
+    _switchTab('atos')
 
     _el('aaInterf').innerHTML  = '<option value="">Buscando interferências...</option>'
     _el('aaUser').innerHTML    = '<option value="">Buscando usuários...</option>'

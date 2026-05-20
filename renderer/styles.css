@@ -1684,6 +1684,55 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   cursor: default !important;
 }
 
+.aa-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.aa-tab {
+  padding: 8px 22px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--text-light);
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.aa-tab:hover { color: var(--text); }
+
+.aa-tab.aa-tab-active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+
+.aa-tab-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.aa-tab-panel[hidden] { display: none; }
+
+.aa-disp-panel {
+  flex: 1;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aa-disp-placeholder {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
 /* ── DOCUMENT CHART OVERLAY ── */
 .dc-frame {
   flex: 1;

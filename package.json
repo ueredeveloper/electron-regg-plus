@@ -1,6 +1,6 @@
 {
   "name": "electron-regg",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Sistema de Registro e Outorga de Recursos Hídricos - Desktop",
   "author": "Fabrício José Barrozo",
   "main": "main.js",

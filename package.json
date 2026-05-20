@@ -7,11 +7,16 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
-    "dist": "set CSC_IDENTITY_AUTO_DISCOVERY=false && electron-builder --win portable"
+    "dist": "set CSC_IDENTITY_AUTO_DISCOVERY=false && electron-builder --win portable --publish always"
   },
   "build": {
     "appId": "com.ueredeveloper.reegg",
     "productName": "REEG+",
+    "publish": {
+      "provider": "github",
+      "owner": "ueredeveloper",
+      "repo": "electron-regg-plus"
+    },
     "files": [
       "**/*",
       "!node_modules/electron/**",
@@ -42,6 +47,7 @@
   "dependencies": {
     "@turf/helpers": "^6.5.0",
     "echarts": "^5.6.0",
+    "electron-updater": "^6.8.3",
     "leaflet": "^1.9.4",
     "turf": "^3.0.14"
   }

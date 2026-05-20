@@ -367,9 +367,15 @@ const AdministrativeActsView = (() => {
     _el('aaFrame').src = ''
   }
 
+  function show() {
+    if (!_mounted) return
+    _el('aaOverlay')?.removeAttribute('hidden')
+    _updateFrame()
+  }
+
   function isMounted() { return _mounted }
 
   function _el(id) { return document.getElementById(id) }
 
-  return { mount, open, close, isMounted }
+  return { mount, open, close, show, isMounted }
 })()

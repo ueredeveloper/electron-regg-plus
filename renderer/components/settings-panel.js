@@ -113,6 +113,20 @@ const SettingsPanel = (() => {
           `).join('')}
         </div>
 
+        <p class="settings-section-label" style="margin-top:28px">Colaboradores</p>
+        <div class="settings-colaboradores" id="settingsColaboradores">
+          <p class="settings-colab-loading" id="settingsColabLoading">Carregando...</p>
+          <p class="settings-colab-error"   id="settingsColabError"   hidden></p>
+          <div class="settings-colab-table-wrap" id="settingsColabTable" hidden>
+            <table class="settings-colab-table">
+              <thead>
+                <tr><th>E-mail</th><th>Autorizado</th><th></th></tr>
+              </thead>
+              <tbody id="settingsColabBody"></tbody>
+            </table>
+          </div>
+        </div>
+
         <p class="settings-section-label" style="margin-top:28px">Versão do Aplicativo</p>
         <div class="settings-update-box">
           <span class="settings-version">
@@ -286,11 +300,110 @@ const SettingsPanel = (() => {
     window.appService?.onUpdateAvailable(result => _showUpdateResult(result))
   }
 
+  const _ICON_GRANT  = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+  </svg>`
+
+  const _ICON_REVOKE = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+  </svg>`
+
+  /** @description Carrega e renderiza a lista de colaboradores. */
+  async function _loadColaboradores() {
+    const loading = _el('settingsColabLoading')
+    const error   = _el('settingsColabError')
+    const table   = _el('settingsColabTable')
+    const tbody   = _el('settingsColabBody')
+
+    if (!loading) return
+    loading.hidden = false
+    error.hidden   = true
+    table.hidden   = true
+
+    try {
+      const session = JSON.parse(localStorage.getItem('reeg_session') || 'null')
+      const isAdmin = session?.colaborador?.admin === true
+
+      const list = await window.colaboradorService.fetchAll()
+      tbody.innerHTML = list.map(c => `
+        <tr data-id="${c.id}" data-auth="${c.autorizacao}">
+          <td>${c.email}</td>
+          <td class="settings-colab-status ${c.autorizacao ? 'auth-yes' : 'auth-no'}">
+            ${c.autorizacao ? 'Sim' : 'Não'}
+          </td>
+          <td>
+            <button type="button"
+                    class="settings-colab-btn ${c.autorizacao ? 'auth-revoke' : 'auth-grant'}"
+                    data-id="${c.id}" data-auth="${c.autorizacao}"
+                    title="${isAdmin ? (c.autorizacao ? 'Revogar autorização' : 'Autorizar') : 'Somente administradores podem alterar autorizações'}"
+                    ${isAdmin ? '' : 'disabled'}>
+              ${c.autorizacao ? _ICON_REVOKE : _ICON_GRANT}
+            </button>
+          </td>
+        </tr>
+      `).join('')
+
+      if (!isAdmin) {
+        const warn = document.createElement('p')
+        warn.className   = 'settings-colab-warn'
+        warn.textContent = 'Somente administradores podem autorizar ou revogar colaboradores.'
+        table.parentNode.insertBefore(warn, table)
+      }
+
+      tbody.querySelectorAll('.settings-colab-btn:not([disabled])').forEach(btn => {
+        btn.addEventListener('click', () => _toggleAutorizacao(btn))
+      })
+
+      loading.hidden = true
+      table.hidden   = false
+    } catch (err) {
+      loading.hidden      = true
+      error.hidden        = false
+      error.textContent   = `Erro ao carregar colaboradores: ${err.message}`
+    }
+  }
+
+  /**
+   * @description Alterna a autorização de um colaborador e atualiza a linha na tabela.
+   * @param {HTMLButtonElement} btn
+   */
+  async function _toggleAutorizacao(btn) {
+    const id          = btn.dataset.id
+    const currentAuth = btn.dataset.auth === 'true'
+    const newAuth     = !currentAuth
+
+    btn.disabled  = true
+    btn.innerHTML = '<span style="font-size:11px;opacity:.5">…</span>'
+
+    try {
+      await window.colaboradorService.updateAutorizacao(id, newAuth)
+
+      const row    = btn.closest('tr')
+      const status = row.querySelector('.settings-colab-status')
+
+      row.dataset.auth   = newAuth
+      btn.dataset.auth   = newAuth
+      status.textContent = newAuth ? 'Sim' : 'Não'
+      status.className   = `settings-colab-status ${newAuth ? 'auth-yes' : 'auth-no'}`
+      btn.className      = `settings-colab-btn ${newAuth ? 'auth-revoke' : 'auth-grant'}`
+      btn.title          = newAuth ? 'Revogar autorização' : 'Autorizar'
+      btn.innerHTML      = newAuth ? _ICON_REVOKE : _ICON_GRANT
+    } catch (err) {
+      window.showToast?.(`Erro ao atualizar autorização: ${err.message}`, 'error')
+      btn.innerHTML = currentAuth ? _ICON_REVOKE : _ICON_GRANT
+    } finally {
+      btn.disabled = false
+    }
+  }
+
   /** @description Abre o painel de configurações. */
   function open() {
     if (!_mounted) return
     _el('settingsOverlay').classList.add('open')
     _el('settingsPanel').classList.add('open')
+    _loadColaboradores()
   }
 
   /** @description Fecha o painel de configurações. */

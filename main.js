@@ -1,6 +1,10 @@
-const { app, BrowserWindow, ipcMain, screen, shell } = require('electron')
+const { app, BrowserWindow, ipcMain, screen, shell, dialog } = require('electron')
 const path = require('path')
 const fs   = require('fs')
+const { autoUpdater } = require('electron-updater')
+
+autoUpdater.autoDownload    = true
+autoUpdater.autoInstallOnAppQuit = false
 
 // Impede que o DPI scaling do Windows (125%, 150% etc.) amplie a UI do app.
 // O Chromium renderiza em pixels físicos 1:1, ignorando a escala do SO.
@@ -101,15 +105,9 @@ function createWindow() {
 
   win.once('ready-to-show', () => {
     win.maximize()
-    // Verifica atualização silenciosamente após a janela estar pronta
-    setTimeout(async () => {
-      try {
-        const result = await _getUpdateInfo()
-        if (result.type === 'update') {
-          win.webContents.send('app:update-available', result)
-        }
-      } catch { /* falha silenciosa — sem conexão ou API indisponível */ }
-    }, 4000)
+    if (app.isPackaged) {
+      setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 4000)
+    }
   })
 }
 
@@ -201,8 +199,10 @@ ipcMain.handle('auth:setToken', (_event, token) => { authStore.setToken(token); 
 
 /* ── IPC: ColaboradorService ───────────────────────────────────────────────── */
 
-ipcMain.handle('colaborador:login',  (_event, email, password) => _colaboradorSvc.login(email, password))
-ipcMain.handle('colaborador:upsert', (_event, email, password) => _colaboradorSvc.upsert(email, password))
+ipcMain.handle('colaborador:login',             (_event, email, password)       => _colaboradorSvc.login(email, password))
+ipcMain.handle('colaborador:upsert',            (_event, email, password)       => _colaboradorSvc.upsert(email, password))
+ipcMain.handle('colaborador:fetchAll',          ()                              => _colaboradorSvc.fetchAll())
+ipcMain.handle('colaborador:updateAutorizacao', (_event, id, autorizacao)       => _colaboradorSvc.updateAutorizacao(id, autorizacao))
 
 /* ── IPC: CoordConverter ───────────────────────────────────────────────────── */
 
@@ -232,61 +232,31 @@ ipcMain.handle('app:getVersion', () => app.getVersion())
 
 ipcMain.handle('app:openExternal', (_event, url) => shell.openExternal(url))
 
-/**
- * @description Consulta a API do GitHub e retorna informações de atualização.
- * @returns {Promise<{type: string, message: string, url?: string, version?: string}>}
- */
-async function _getUpdateInfo() {
-  const current = app.getVersion()
-  const apiUrl  = 'https://api.github.com/repos/ueredeveloper/j-sb-fx-drainage/releases/latest'
-  const pageUrl = 'https://github.com/ueredeveloper/j-sb-fx-drainage/releases/latest'
-
-  const res = await fetch(apiUrl, {
-    headers: { 'User-Agent': `REEG+/${current}`, Accept: 'application/vnd.github+json' }
-  })
-  if (!res.ok) throw new Error(`GitHub API: ${res.status}`)
-  const data   = await res.json()
-  const latest = (data.tag_name || '').replace(/^v/, '')
-
-  if (latest && _isNewerVersion(latest, current)) {
-    return {
-      type:    'update',
-      version: latest,
-      message: `Nova versão disponível: v${latest}. Clique aqui para baixar.`,
-      url:     data.html_url || pageUrl
-    }
-  }
-  return {
-    type:    'ok',
-    message: `Você está usando a versão mais recente (v${current}).`
-  }
-}
-
 ipcMain.handle('app:checkUpdate', async () => {
+  if (!app.isPackaged) return { type: 'ok', message: 'Modo de desenvolvimento.' }
   try {
-    return await _getUpdateInfo()
-  } catch {
-    return {
-      type:    'error',
-      message: 'Não foi possível verificar atualizações. Verifique sua conexão.'
+    const result = await autoUpdater.checkForUpdates()
+    const latest = result?.updateInfo?.version
+    const current = app.getVersion()
+    if (latest && latest !== current) {
+      return { type: 'update', version: latest, message: `Nova versão disponível: v${latest}. Baixando…` }
     }
+    return { type: 'ok', message: `Você está usando a versão mais recente (v${current}).` }
+  } catch {
+    return { type: 'error', message: 'Não foi possível verificar atualizações. Verifique sua conexão.' }
   }
 })
 
-/**
- * @description Compara duas versões semânticas (MAJOR.MINOR.PATCH).
- * @param {string} latest
- * @param {string} current
- * @returns {boolean}
- */
-function _isNewerVersion(latest, current) {
-  const parse = v => v.split('.').map(n => parseInt(n) || 0)
-  const [lMaj, lMin, lPat] = parse(latest)
-  const [cMaj, cMin, cPat] = parse(current)
-  if (lMaj !== cMaj) return lMaj > cMaj
-  if (lMin !== cMin) return lMin > cMin
-  return lPat > cPat
-}
+autoUpdater.on('update-downloaded', () => {
+  dialog.showMessageBox({
+    type:    'info',
+    title:   'Atualização pronta',
+    message: 'Uma nova versão foi baixada. O aplicativo será reiniciado para instalar.',
+    buttons: ['Reiniciar agora', 'Mais tarde']
+  }).then(({ response }) => {
+    if (response === 0) autoUpdater.quitAndInstall()
+  })
+})
 
 /* ── App lifecycle ─────────────────────────────────────────────────────────── */
 

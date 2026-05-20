@@ -114,8 +114,10 @@ contextBridge.exposeInMainWorld('availabilityService', {
 
 /** @description Serviço de autenticação de colaboradores. */
 contextBridge.exposeInMainWorld('colaboradorService', {
-  login:  (email, password) => ipcRenderer.invoke('colaborador:login',  email, password),
-  upsert: (email, password) => ipcRenderer.invoke('colaborador:upsert', email, password)
+  login:             (email, password) => ipcRenderer.invoke('colaborador:login',             email, password),
+  upsert:            (email, password) => ipcRenderer.invoke('colaborador:upsert',            email, password),
+  fetchAll:          ()                => ipcRenderer.invoke('colaborador:fetchAll'),
+  updateAutorizacao: (id, autorizacao) => ipcRenderer.invoke('colaborador:updateAutorizacao', id, autorizacao)
 })
 
 /** @description Serviço de aplicativo: versão, atualização e configurações. */

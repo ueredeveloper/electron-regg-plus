@@ -245,13 +245,36 @@ document.getElementById('btnSave').addEventListener('click', async () => {
   }
 })
 
+const _DRAWER_VIEWS = [
+  { view: AddressView,      id: 'address-drawer' },
+  { view: InterferenceView, id: 'interference-drawer' },
+  { view: UserView,         id: 'user-drawer' },
+  { view: ProcessView,      id: 'process-drawer' },
+  { view: AnnexView,        id: 'annex-drawer' },
+]
+
+let _lastOpenView = null
+
 document.getElementById('btnToggleMap').addEventListener('click', () => {
   const ws = document.querySelector('.workspace')
   ws.classList.toggle('map-expanded')
+
   if (ws.classList.contains('map-expanded')) {
+    _lastOpenView =
+      _DRAWER_VIEWS.find(({ id }) => document.getElementById(id)?.classList.contains('open'))?.view
+      ?? (!document.getElementById('aaOverlay')?.hidden ? AdministrativeActsView : null)
+
     ;[AddressView, InterferenceView, UserView, ProcessView, AnnexView, AdministrativeActsView]
       .forEach(v => v.isMounted() && v.close())
+  } else if (_lastOpenView) {
+    const viewToReopen = _lastOpenView
+    _lastOpenView = null
+    setTimeout(() => {
+      if (typeof viewToReopen.show === 'function') viewToReopen.show()
+      else viewToReopen.open()
+    }, 400)
   }
+
   setTimeout(() => map.invalidateSize({ animate: false }), 370)
 })
 

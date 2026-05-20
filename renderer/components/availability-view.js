@@ -465,19 +465,46 @@ const AvailabilityView = (() => {
       const lat = p.int_latitude  ?? p.latitude
       const lng = p.int_longitude ?? p.longitude
       if (lat == null || lng == null) return
-      const vol = parseFloat(p.dt_demanda?.vol_anual_ma) || 0
+      const vol    = parseFloat(p.dt_demanda?.vol_anual_ma) || 0
+      const nome   = p.us_nome   || '—'
+      const cpf    = _fmtCpfCnpj(p.us_cpf_cnpj || '—')
+      const proc   = p.int_processo || '—'
+      const fmtLat = Number(lat).toFixed(6)
+      const fmtLng = Number(lng).toFixed(6)
       const m = L.circleMarker([lat, lng], {
         radius: 5, color: '#f97316', fillColor: '#f97316', fillOpacity: 0.75, weight: 1.5
       })
-      m.bindTooltip(`Outorga existente<br>Q: ${vol.toLocaleString('pt-BR', { maximumFractionDigits: 2 })} m³/ano`)
+      m.bindTooltip(nome)
+      m.bindPopup(`
+        <div style="min-width:200px;line-height:1.6;font-size:12px">
+          <strong>${nome}</strong><br>
+          CPF/CNPJ: ${cpf}<br>
+          Processo: ${proc}<br>
+          Lat: ${fmtLat} / Lng: ${fmtLng}<br>
+          Q: ${vol.toLocaleString('pt-BR', { maximumFractionDigits: 2 })} m³/ano
+        </div>`)
       layers.push(m)
     })
 
     if (userPoint?.lat != null && userPoint?.lng != null) {
+      const fmtLat = Number(userPoint.lat).toFixed(6)
+      const fmtLng = Number(userPoint.lng).toFixed(6)
+      const nome   = _selectedInterference?.us_nome || _users.find(u => String(u.id) === String(_selectedUserId))?.nome || '—'
+      const cpf    = _fmtCpfCnpj(_selectedInterference?.us_cpf_cnpj || _users.find(u => String(u.id) === String(_selectedUserId))?.cpfCnpj || '—')
+      const proc   = SelectProcess.isMounted() ? (SelectProcess.getData()?.numero || '—') : '—'
+      const vol    = userPoint.vol || 0
       const m = L.circleMarker([userPoint.lat, userPoint.lng], {
         radius: 7, color: '#0ea5e9', fillColor: '#0ea5e9', fillOpacity: 0.9, weight: 2
       })
-      m.bindTooltip(`Ponto analisado<br>Q: ${(userPoint.vol || 0).toLocaleString('pt-BR', { maximumFractionDigits: 2 })} m³/ano`)
+      m.bindTooltip(nome)
+      m.bindPopup(`
+        <div style="min-width:200px;line-height:1.6;font-size:12px">
+          <strong>${nome}</strong> <em style="color:#0ea5e9">(ponto analisado)</em><br>
+          CPF/CNPJ: ${cpf}<br>
+          Processo: ${proc}<br>
+          Lat: ${fmtLat} / Lng: ${fmtLng}<br>
+          Q: ${vol.toLocaleString('pt-BR', { maximumFractionDigits: 2 })} m³/ano
+        </div>`)
       layers.push(m)
     }
 

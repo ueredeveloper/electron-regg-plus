@@ -49,5 +49,138 @@
         "email": "ueredeveloper@gmail.com"
       }
     }
+  },
+  {
+    "timestamp": "2026-05-20T14:50:42.018Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 401,
+    "ok": false,
+    "body": null
+  },
+  {
+    "timestamp": "2026-05-20T14:51:16.193Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 401,
+    "ok": false,
+    "body": null
+  },
+  {
+    "timestamp": "2026-05-20T14:52:09.750Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImZhYnJpY2lvLmJhcnJvem9AYWRhc2EuZGYuZ292LmJyIiwiaWF0IjoxNzc5Mjg4Nzk4LCJleHAiOjE3NzkzMDMxOTh9.RsjtXGWs_ioMGnHEsVpcH3kV2ztjBWUZRwVn_9lNSqM",
+      "colaborador": {
+        "id": "1",
+        "email": "fabricio.barrozo@adasa.df.gov.br"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T14:53:23.780Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImZhYnJpY2lvLmJhcnJvem9AYWRhc2EuZGYuZ292LmJyIiwiaWF0IjoxNzc5Mjg4ODcyLCJleHAiOjE3NzkzMDMyNzJ9.ai4JYcWUqtFfiAKu3pn8diLborLqcCuEFnvhfm-dwcM",
+      "colaborador": {
+        "id": "1",
+        "email": "fabricio.barrozo@adasa.df.gov.br"
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:41:01.175Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImZhYnJpY2lvLmJhcnJvem9AYWRhc2EuZGYuZ292LmJyIiwiYWRtaW4iOnRydWUsImlhdCI6MTc3OTI5MTY2MSwiZXhwIjoxNzc5MzA2MDYxfQ.XX1OQiF4K_FNfpqMJsbgW8zrfPed0XYBEjUbJbY65MA",
+      "colaborador": {
+        "id": "1",
+        "email": "fabricio.barrozo@adasa.df.gov.br",
+        "admin": true
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:41:29.519Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImZhYnJpY2lvLmJhcnJvem9AYWRhc2EuZGYuZ292LmJyIiwiYWRtaW4iOnRydWUsImlhdCI6MTc3OTI5MTY4OSwiZXhwIjoxNzc5MzA2MDg5fQ.bzaQkz9EA_y4aliiXz9mkh_1v1t0G8b6wMrTx9dC68Y",
+      "colaborador": {
+        "id": "1",
+        "email": "fabricio.barrozo@adasa.df.gov.br",
+        "admin": true
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T15:42:56.519Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImZhYnJpY2lvLmJhcnJvem9AYWRhc2EuZGYuZ292LmJyIiwiYWRtaW4iOnRydWUsImlhdCI6MTc3OTI5MTc3NiwiZXhwIjoxNzc5MzA2MTc2fQ.AAjAiBF4X3pH4o9Oz_Yd2p2Mx0rhC3J_ulXguAoE09A",
+      "colaborador": {
+        "id": "1",
+        "email": "fabricio.barrozo@adasa.df.gov.br",
+        "admin": true
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T16:06:11.834Z",
+    "email": "ueredeveloper@gmail.com",
+    "httpStatus": 401,
+    "ok": false,
+    "body": {
+      "error": "Credenciais inválidas"
+    }
+  },
+  {
+    "timestamp": "2026-05-20T16:23:01.722Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImZhYnJpY2lvLmJhcnJvem9AYWRhc2EuZGYuZ292LmJyIiwiYWRtaW4iOnRydWUsImlhdCI6MTc3OTI5NDE4MiwiZXhwIjoxNzc5MzA4NTgyfQ._-1Ck7V0esIHradE6TVT7tAxy5ny0WjzqixMu7bTewI",
+      "colaborador": {
+        "id": "1",
+        "email": "fabricio.barrozo@adasa.df.gov.br",
+        "admin": true
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T16:23:39.393Z",
+    "email": "fabmus1@gmail.com",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExIiwiZW1haWwiOiJmYWJtdXMxQGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNzc5Mjk0MjE5LCJleHAiOjE3NzkzMDg2MTl9.yrLkNPyq-b8FWnXWJzsdf3e2K3Wmz7F4E5mn6vqTKqc",
+      "colaborador": {
+        "id": "11",
+        "email": "fabmus1@gmail.com",
+        "admin": false
+      }
+    }
+  },
+  {
+    "timestamp": "2026-05-20T16:24:08.306Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImZhYnJpY2lvLmJhcnJvem9AYWRhc2EuZGYuZ292LmJyIiwiYWRtaW4iOnRydWUsImlhdCI6MTc3OTI5NDI0OCwiZXhwIjoxNzc5MzA4NjQ4fQ.cX7BoupbIcUoe4D_8OkEYmP1MS0DywJRW0LFD5Pg7fw",
+      "colaborador": {
+        "id": "1",
+        "email": "fabricio.barrozo@adasa.df.gov.br",
+        "admin": true
+      }
+    }
   }
 ]

@@ -5,7 +5,8 @@
  * em localStorage e reaplicado automaticamente ao iniciar o app.
  */
 const SettingsPanel = (() => {
-  let _mounted = false
+  let _mounted    = false
+  let _currentZoom = 1
 
   /** @description Paletas disponíveis com cores de pré-visualização. */
   const _THEMES = [
@@ -56,6 +57,7 @@ const SettingsPanel = (() => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && _el('settingsPanel')?.classList.contains('open')) close()
     })
+    window.addEventListener('resize', _compensateWorkspace)
 
     _mounted = true
   }
@@ -120,6 +122,7 @@ const SettingsPanel = (() => {
           <button type="button" class="settings-font-btn" data-size="12">A <small>12</small></button>
           <button type="button" class="settings-font-btn" data-size="14">A <small>14</small></button>
           <button type="button" class="settings-font-btn" data-size="16">A <small>16</small></button>
+          <button type="button" class="settings-font-btn" data-size="18">A <small>18</small></button>
         </div>
 
         <p class="settings-section-label" style="margin-top:28px">Colaboradores</p>
@@ -190,8 +193,20 @@ const SettingsPanel = (() => {
   }
 
   function _applyFontSize(size) {
-    const zoom = { '12': '0.90', '14': '1', '16': '1.15' }
-    document.documentElement.style.zoom = zoom[String(size)] || '1'
+    const zoomMap = { '12': 0.90, '14': 1.0, '16': 1.15, '18': 1.30 }
+    _currentZoom = zoomMap[String(size)] || 1
+    document.documentElement.style.zoom = _currentZoom
+    _compensateWorkspace()
+  }
+
+  function _compensateWorkspace() {
+    const ws = document.querySelector('.workspace')
+    if (!ws) return
+    if (_currentZoom === 1) { ws.style.height = ''; return }
+    // 100vh fica com o tamanho não-escalado; compensamos para o workspace
+    // caber exatamente no viewport após o zoom ser aplicado.
+    // topbar-h = 52px (var(--topbar-h))
+    ws.style.height = (window.innerHeight / _currentZoom - 52) + 'px'
   }
 
   function _markActiveFont(size) {

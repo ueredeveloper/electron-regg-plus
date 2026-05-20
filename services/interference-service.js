@@ -8,12 +8,14 @@
 
 const path           = require('path')
 const { appendJson, writeJson } = require('../utils/write-json')
+const { getAuthHeaders } = require('../utils/http-headers')
 
-const BASE_URL      = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
-const SAMPLE_OUT    = path.join(__dirname, 'json', 'interference-fetch-by-keyword.json')
-const SAVE_OUT      = path.join(__dirname, 'json', 'interference-save-response.json')
-const UPDATE_OUT    = path.join(__dirname, 'json', 'interference-update-response.json')
-const DELETE_OUT    = path.join(__dirname, 'json', 'interference-delete-response.json')
+const BASE_URL          = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
+const SAMPLE_OUT        = path.join(__dirname, 'json', 'interference-fetch-by-keyword.json')
+const FETCH_BY_ADDR_OUT = path.join(__dirname, 'json', 'interference-fetch-by-address-id.json')
+const SAVE_OUT          = path.join(__dirname, 'json', 'interference-save-response.json')
+const UPDATE_OUT        = path.join(__dirname, 'json', 'interference-update-response.json')
+const DELETE_OUT        = path.join(__dirname, 'json', 'interference-delete-response.json')
 
 class InterferenceService {
   /**
@@ -24,7 +26,7 @@ class InterferenceService {
    */
   async fetchByKeyword(keyword) {
     const url = `${BASE_URL}/interferences/search-interferences-by-param?param=${encodeURIComponent(keyword)}`
-    const res = await fetch(url)
+    const res = await fetch(url, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`fetchByKeyword: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
 
@@ -41,7 +43,7 @@ class InterferenceService {
   async save(interference) {
     const res = await fetch(`${BASE_URL}/interferences/upsert-interference`, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
       body:    JSON.stringify(interference)
     })
     const data = await res.json().catch(() => null)
@@ -58,7 +60,7 @@ class InterferenceService {
   async update(interference) {
     const res = await fetch(`${BASE_URL}/interferences/upsert-interference`, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
       body:    JSON.stringify(interference)
     })
     const data = await res.json().catch(() => null)
@@ -80,14 +82,32 @@ class InterferenceService {
    */
   async fetchRawByKeyword(keyword) {
     const url = `${BASE_URL}/interferences/search-interferences-by-param?param=${encodeURIComponent(keyword)}`
-    const res = await fetch(url)
+    const res = await fetch(url, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`fetchRawByKeyword: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
     return Array.isArray(data) ? data : []
   }
 
+  /**
+   * @description Busca interferências com demandas pelo ID do endereço.
+   * Equivale a: GET /interferences/search-interferences-by-address-id?addId=<id>
+   * Retorna os objetos brutos da API incluindo dt_demanda.vol_anual_ma.
+   * @param {number|string} addId - ID do endereço.
+   * @returns {Promise<Object[]>} Lista de interferências brutas com demandas.
+   */
+  async fetchRawByAddressId(addId) {
+    const res = await fetch(
+      `${BASE_URL}/interferences/search-interferences-by-address-id?addId=${addId}`,
+      { headers: getAuthHeaders() }
+    )
+    if (!res.ok) throw new Error(`fetchRawByAddressId: HTTP ${res.status} ${res.statusText}`)
+    const data = await res.json()
+    if (Array.isArray(data) && data.length > 0) writeJson(FETCH_BY_ADDR_OUT, data[0])
+    return Array.isArray(data) ? data : []
+  }
+
   async deleteById(id) {
-    const res  = await fetch(`${BASE_URL}/interferences/delete-interference?id=${id}`, { method: 'DELETE' })
+    const res  = await fetch(`${BASE_URL}/interferences/delete-interference?id=${id}`, { method: 'DELETE', headers: getAuthHeaders() })
     const text = await res.text().catch(() => '')
     let data = null
     try { data = text ? JSON.parse(text) : null } catch { data = null }

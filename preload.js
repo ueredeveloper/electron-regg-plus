@@ -57,11 +57,12 @@ contextBridge.exposeInMainWorld('annexService', {
 
 /** @description Serviço de interferências hídricas. */
 contextBridge.exposeInMainWorld('interferenceService', {
-  fetchByKeyword:    (keyword) => ipcRenderer.invoke('interference:fetchByKeyword', keyword),
-  fetchRawByKeyword: (keyword) => ipcRenderer.invoke('interference:fetchRawByKeyword', keyword),
-  save:              (obj)     => ipcRenderer.invoke('interference:save', obj),
-  update:            (obj)     => ipcRenderer.invoke('interference:update', obj),
-  deleteById:        (id)      => ipcRenderer.invoke('interference:deleteById', id)
+  fetchByKeyword:      (keyword) => ipcRenderer.invoke('interference:fetchByKeyword', keyword),
+  fetchRawByKeyword:   (keyword) => ipcRenderer.invoke('interference:fetchRawByKeyword', keyword),
+  fetchRawByAddressId: (addId)   => ipcRenderer.invoke('interference:fetchRawByAddressId', addId),
+  save:                (obj)     => ipcRenderer.invoke('interference:save', obj),
+  update:              (obj)     => ipcRenderer.invoke('interference:update', obj),
+  deleteById:          (id)      => ipcRenderer.invoke('interference:deleteById', id)
 })
 
 /** @description Serviço de bacias hidrográficas. */
@@ -104,6 +105,11 @@ contextBridge.exposeInMainWorld('coordService', {
 /** @description Sincroniza o token JWT com o processo main. */
 contextBridge.exposeInMainWorld('authService', {
   setToken: (token) => ipcRenderer.invoke('auth:setToken', token)
+})
+
+/** @description Serviço de análise de disponibilidade hídrica subterrânea. */
+contextBridge.exposeInMainWorld('availabilityService', {
+  findPointsInSystem: (tpId, lat, lng) => ipcRenderer.invoke('availability:findPoints', tpId, lat, lng)
 })
 
 /** @description Serviço de autenticação de colaboradores. */

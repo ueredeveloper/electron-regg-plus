@@ -6,6 +6,7 @@
 
 const path          = require('path')
 const { writeJson } = require('../utils/write-json')
+const { getAuthHeaders } = require('../utils/http-headers')
 
 const BASE_URL  = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
 const OUT_FETCH = path.join(__dirname, 'json', 'estado-fetch-all.json')
@@ -16,7 +17,8 @@ class EstadoService {
    * @returns {Promise<Array<{id: number, descricao: string}>>}
    */
   async fetchAll() {
-    const res = await fetch(`${BASE_URL}/states/fetch-all-states`)
+
+    const res = await fetch(`${BASE_URL}/states/fetch-all-states`, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`fetchAll: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
     if (Array.isArray(data) && data.length) writeJson(OUT_FETCH, data)

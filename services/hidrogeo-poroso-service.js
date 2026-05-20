@@ -1,14 +1,11 @@
 /**
  * @file hidrogeo-poroso-service.js
  * @description Serviço HTTP para a entidade Hidrogeo Poroso.
- * Espelha HidrogeoPorosoService.java:
- *   GET /hydrogeo-poroso/list-all
- *   GET /hydrogeo-poroso/find-by-point?latitude=&longitude=
- *   GET /poroso/list-by-cod-plan?codPlan=
  */
 
 const path     = require('path')
 const { writeJson } = require('../utils/write-json')
+const { getAuthHeaders } = require('../utils/http-headers')
 
 const BASE_URL  = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
 const _JSON_DIR = path.join(__dirname, 'json')
@@ -23,12 +20,8 @@ class HidrogeoPorosoService {
     }
   }
 
-  /**
-   * @description Lista todos os sistemas porosos cadastrados.
-   * @returns {Promise<Array<{id, codPlan, descricao, qMedia}>>}
-   */
   async listAll() {
-    const res = await fetch(`${BASE_URL}/hydrogeo-poroso/list-all`)
+    const res = await fetch(`${BASE_URL}/hydrogeo-poroso/list-all`, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`poroso/listAll: HTTP ${res.status} ${res.statusText}`)
     const data  = await res.json()
     const items = Array.isArray(data) ? data : Object.values(data)
@@ -36,14 +29,11 @@ class HidrogeoPorosoService {
     return items.map(p => this._map(p))
   }
 
-  /**
-   * @description Busca o sistema poroso que contém o ponto geográfico informado.
-   * @param {number|string} lat
-   * @param {number|string} lng
-   * @returns {Promise<Array<{id, codPlan, descricao, qMedia}>>}
-   */
   async findByPoint(lat, lng) {
-    const res = await fetch(`${BASE_URL}/hydrogeo-poroso/find-by-point?latitude=${lat}&longitude=${lng}`)
+    const res = await fetch(
+      `${BASE_URL}/hydrogeo-poroso/find-by-point?latitude=${lat}&longitude=${lng}`,
+      { headers: getAuthHeaders() }
+    )
     if (!res.ok) throw new Error(`poroso/findByPoint: HTTP ${res.status} ${res.statusText}`)
     const data   = await res.json()
     const items  = Array.isArray(data) ? data : Object.values(data)
@@ -54,13 +44,11 @@ class HidrogeoPorosoService {
     return result
   }
 
-  /**
-   * @description Busca sistemas porosos pelo código de planejamento.
-   * @param {string} codPlan
-   * @returns {Promise<Array<{id, codPlan, descricao, qMedia}>>}
-   */
   async findByCodPlan(codPlan) {
-    const res = await fetch(`${BASE_URL}/poroso/list-by-cod-plan?codPlan=${encodeURIComponent(codPlan)}`)
+    const res = await fetch(
+      `${BASE_URL}/poroso/list-by-cod-plan?codPlan=${encodeURIComponent(codPlan)}`,
+      { headers: getAuthHeaders() }
+    )
     if (!res.ok) throw new Error(`poroso/findByCodPlan: HTTP ${res.status} ${res.statusText}`)
     const data   = await res.json()
     const items  = Array.isArray(data) ? data : Object.values(data)

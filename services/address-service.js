@@ -8,6 +8,7 @@
 
 const path          = require('path')
 const { appendJson, writeJson } = require('../utils/write-json')
+const { getAuthHeaders } = require('../utils/http-headers')
 
 const BASE_URL   = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
 const OUT_FETCH  = path.join(__dirname, 'json', 'address-fetch-by-keyword.json')
@@ -23,7 +24,7 @@ class AddressService {
    */
   async fetchByKeyword(keyword) {
     const url = `${BASE_URL}/addresses/search-address-by-param?param=${encodeURIComponent(keyword)}`
-    const res = await fetch(url)
+    const res = await fetch(url, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`fetchByKeyword: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
     if (Array.isArray(data) && data.length > 0) writeJson(OUT_FETCH, data[0])
@@ -41,7 +42,7 @@ class AddressService {
 
     const res = await fetch(`${BASE_URL}/addresses/upsert-address`, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
       body:    JSON.stringify(payload)
     })
     if (!res.ok) throw new Error(`save: HTTP ${res.status} ${res.statusText}`)
@@ -57,7 +58,7 @@ class AddressService {
    * @returns {Promise<void>}
    */
   async deleteById(id) {
-    const res  = await fetch(`${BASE_URL}/addresses/delete-address?id=${id}`, { method: 'DELETE' })
+    const res  = await fetch(`${BASE_URL}/addresses/delete-address?id=${id}`, { method: 'DELETE', headers: getAuthHeaders() })
     const text = await res.text().catch(() => '')
     const data = text ? JSON.parse(text) : null
     appendJson(OUT_DELETE, { timestamp: new Date().toISOString(), id: Number(id), status: res.status, body: data })

@@ -5,6 +5,8 @@
  *   DELETE /purposes/delete-purpose?id=
  */
 
+const { getAuthHeaders } = require('../utils/http-headers')
+
 const BASE_URL = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
 
 class FinalidadeService {
@@ -14,7 +16,7 @@ class FinalidadeService {
    * @returns {Promise<void>}
    */
   async deleteById(id) {
-    const res = await fetch(`${BASE_URL}/purposes/delete-purpose?id=${id}`, { method: 'DELETE' })
+    const res = await fetch(`${BASE_URL}/purposes/delete-purpose?id=${id}`, { method: 'DELETE', headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`finalidade/deleteById: HTTP ${res.status} ${res.statusText}`)
   }
 }

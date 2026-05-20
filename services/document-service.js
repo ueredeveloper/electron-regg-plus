@@ -10,6 +10,7 @@
 
 const path      = require('path')
 const { appendJson, writeJson } = require('../utils/write-json')
+const { getAuthHeaders } = require('../utils/http-headers')
 
 const BASE_URL    = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
 const OUT_FETCH          = path.join(__dirname, 'json', 'document-fetch-by-param.json')
@@ -27,7 +28,7 @@ class DocumentService {
    */
   async fetchByParam(keyword) {
     const url = `${BASE_URL}/documents/search-documents-by-param?param=${encodeURIComponent(keyword)}`
-    const res = await fetch(url)
+    const res = await fetch(url, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`fetchByParam: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
 
@@ -46,7 +47,7 @@ class DocumentService {
 
     const res = await fetch(`${BASE_URL}/documents/upsert-document`, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
       body:    JSON.stringify(payload)
     })
     if (!res.ok) throw new Error(`save: HTTP ${res.status} ${res.statusText}`)
@@ -66,7 +67,7 @@ class DocumentService {
 
     const res = await fetch(`${BASE_URL}/documents/upsert-document`, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
       body:    JSON.stringify(payload)
     })
     if (!res.ok) throw new Error(`update: HTTP ${res.status} ${res.statusText}`)
@@ -87,7 +88,7 @@ class DocumentService {
    */
   async fetchByUserId(userId) {
     const url = `${BASE_URL}/documents/search-documents-by-user-id?id=${userId}`
-    const res = await fetch(url)
+    const res = await fetch(url, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`fetchByUserId: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
 
@@ -99,7 +100,7 @@ class DocumentService {
   
   async deleteById(id) {
 
-    const res  = await fetch(`${BASE_URL}/documents/delete-document?id=${id}`, { method: 'DELETE' })
+    const res  = await fetch(`${BASE_URL}/documents/delete-document?id=${id}`, { method: 'DELETE', headers: getAuthHeaders() })
     const text = await res.text().catch(() => '')
 
     let data = null

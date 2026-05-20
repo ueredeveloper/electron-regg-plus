@@ -8,6 +8,7 @@
 
 const path          = require('path')
 const { writeJson } = require('../utils/write-json')
+const { getAuthHeaders } = require('../utils/http-headers')
 
 const BASE_URL   = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
 const SAMPLE_OUT = path.join(__dirname, 'json', 'bacia-list-all.json')
@@ -18,7 +19,7 @@ class BaciaService {
    * @returns {Promise<Array<{id: number, descricao: string}>>}
    */
   async listAll() {
-    const res = await fetch(`${BASE_URL}/hydrographic-basins/list-all`)
+    const res = await fetch(`${BASE_URL}/hydrographic-basins/list-all`, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`listAll: HTTP ${res.status} ${res.statusText}`)
     const data = await res.json()
     const items = Array.isArray(data) ? data : Object.values(data)
@@ -29,14 +30,13 @@ class BaciaService {
 
   /**
    * @description Busca a bacia hidrográfica que contém o ponto geográfico informado.
-   * Retorna o mesmo formato de listAll() — { id, descricao } — para uso direto nos selects.
    * @param {number|string} lat - Latitude.
    * @param {number|string} lng - Longitude.
    * @returns {Promise<Array<{id: number, descricao: string}>>}
    */
   async findByPoint(lat, lng) {
     const url = `${BASE_URL}/hydrographic-basins/find-by-point?latitude=${lat}&longitude=${lng}`
-    const res = await fetch(url)
+    const res = await fetch(url, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`findByPoint: HTTP ${res.status} ${res.statusText}`)
     const data  = await res.json()
     const items = Array.isArray(data) ? data : Object.values(data)

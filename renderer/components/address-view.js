@@ -117,7 +117,6 @@ const AddressView = (() => {
     _bindEvents()
     AddressList.mount(_el('avListMount'))
     _mounted = true
-    _loadEstados()
   }
 
   /**
@@ -361,6 +360,7 @@ const AddressView = (() => {
    */
   async function open() {
     if (!_mounted) return
+    if (!_estadoList.length) await _loadEstados()
     _lastSelected = null
     const { addressId } = SelectAddress.getValue()
     if (addressId) {

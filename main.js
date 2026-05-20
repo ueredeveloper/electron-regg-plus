@@ -25,6 +25,7 @@ const HidrogeoFraturadoService = require('./services/hidrogeo-fraturado-service'
 const FinalidadeService        = require('./services/finalidade-service')
 const CoordConverter           = require('./utils/coord-converter')
 const ColaboradorService       = require('./services/colaborador-service')
+const AvailabilityService      = require('./services/availability-service')
 const authStore                = require('./utils/auth-store')
 
 /* ── Interceptor global de fetch: injeta Bearer token em todas as requisições ── */
@@ -54,6 +55,7 @@ const _porosoSvc     = new HidrogeoPorosoService()
 const _fraturadoSvc  = new HidrogeoFraturadoService()
 const _finalidadeSvc = new FinalidadeService()
 const _colaboradorSvc = new ColaboradorService()
+const _availSvc       = new AvailabilityService()
 
 if (!app.isPackaged) {
   const _electronExec = path.join(
@@ -158,6 +160,7 @@ ipcMain.handle('annex:deleteById',     (_event, id)      => _annexSvc.deleteById
 
 ipcMain.handle('interference:fetchByKeyword',    (_event, keyword) => _ifSvc.fetchByKeyword(keyword))
 ipcMain.handle('interference:fetchRawByKeyword', (_event, keyword) => _ifSvc.fetchRawByKeyword(keyword))
+ipcMain.handle('interference:fetchRawByAddressId', (_event, addId) => _ifSvc.fetchRawByAddressId(addId))
 ipcMain.handle('interference:save',              (_event, obj)     => _ifSvc.save(obj))
 ipcMain.handle('interference:update',            (_event, obj)     => _ifSvc.update(obj))
 ipcMain.handle('interference:deleteById',        (_event, id)      => _ifSvc.deleteById(id))
@@ -187,6 +190,10 @@ ipcMain.handle('poroso:findByCodPlan', (_event, codPlan)   => _porosoSvc.findByC
 ipcMain.handle('fraturado:listAll',       ()                  => _fraturadoSvc.listAll())
 ipcMain.handle('fraturado:findByPoint',   (_event, lat, lng)  => _fraturadoSvc.findByPoint(lat, lng))
 ipcMain.handle('fraturado:findByCodPlan', (_event, codPlan)   => _fraturadoSvc.findByCodPlan(codPlan))
+
+/* ── IPC: AvailabilityService ──────────────────────────────────────────────── */
+
+ipcMain.handle('availability:findPoints', (_event, tpId, lat, lng) => _availSvc.findPointsInSystem(tpId, lat, lng))
 
 /* ── IPC: Auth ─────────────────────────────────────────────────────────────── */
 

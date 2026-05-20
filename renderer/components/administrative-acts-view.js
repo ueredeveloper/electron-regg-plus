@@ -1,8 +1,8 @@
 /**
  * @file administrative-acts-view.js
- * @description Tela modal com duas abas:
+ * @description Modal com duas abas:
  *   - Atos Administrativos: geração de documentos via templates.
- *   - Análise de Disponibilidade: análise de outorga por coordenada.
+ *   - Análise de Disponibilidade: delegado ao AvailabilityView.
  */
 const AdministrativeActsView = (() => {
   let _mounted  = false
@@ -23,10 +23,8 @@ const AdministrativeActsView = (() => {
     { dir: 6, nome: 'Outorga Prévia - Poço Raso' },
   ]
 
-  /**
-   * @description Renderiza a estrutura do overlay e registra os eventos.
-   * @param {HTMLElement} container
-   */
+  /* ── Mount ──────────────────────────────────────────────────────────────── */
+
   function mount(container) {
     _container = container
 
@@ -42,7 +40,7 @@ const AdministrativeActsView = (() => {
             </svg>
             Fechar
           </button>
-          <span class="av-title">Atos Administrativos</span>
+          <span class="av-title">Análise</span>
           <button type="button" class="btn av-new-btn aa-copy-btn" id="aaCopy">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2"
@@ -113,21 +111,19 @@ const AdministrativeActsView = (() => {
           <iframe id="aaFrame" class="aa-frame" src=""></iframe>
         </div>
 
-        <!-- Aba: Análise de Disponibilidade -->
-        <div id="aaPanelDisp" class="aa-tab-panel" hidden>
-          <div class="aa-disp-panel">
-            <p class="aa-disp-placeholder">Informe a coordenada para análise de disponibilidade de outorga.</p>
-          </div>
-        </div>
+        <!-- Aba: Análise de Disponibilidade (conteúdo injetado pelo AvailabilityView) -->
+        <div id="aaPanelDisp" class="aa-tab-panel" hidden></div>
 
       </div>
     `
 
+    AvailabilityView.mount(document.getElementById('aaPanelDisp'))
     _bindEvents()
     _mounted = true
   }
 
-  /** @description Registra os eventos do overlay. */
+  /* ── Eventos ────────────────────────────────────────────────────────────── */
+
   function _bindEvents() {
     _el('aaClose').addEventListener('click', close)
     _el('aaCopy').addEventListener('click', _copyHtml)
@@ -156,16 +152,23 @@ const AdministrativeActsView = (() => {
         _selectedInterference = null
       }
       _updateFrame()
+      if (_activeTab === 'disp') {
+        AvailabilityView.setContext(_selectedInterference, _users, _el('aaUser').value)
+      }
     })
 
-    _el('aaUser').addEventListener('change', _updateFrame)
+    _el('aaUser').addEventListener('change', () => {
+      _updateFrame()
+      if (_activeTab === 'disp') {
+        AvailabilityView.setContext(_selectedInterference, _users, _el('aaUser').value)
+      }
+    })
+
     _el('aaTemplate').addEventListener('change', _updateFrame)
   }
 
-  /**
-   * @description Alterna entre as abas "atos" e "disp".
-   * @param {'atos'|'disp'} tab
-   */
+  /* ── Abas ───────────────────────────────────────────────────────────────── */
+
   function _switchTab(tab) {
     _activeTab = tab
     const isAtos = tab === 'atos'
@@ -175,11 +178,13 @@ const AdministrativeActsView = (() => {
     _el('aaPanelDisp').hidden = isAtos
     _el('aaCopy').style.display  = isAtos ? '' : 'none'
     _el('aaPrint').style.display = isAtos ? '' : 'none'
+    if (!isAtos) {
+      AvailabilityView.setContext(_selectedInterference, _users, _el('aaUser').value)
+    }
   }
 
-  /**
-   * @description Abre o overlay, lê os dados da tela principal e carrega os selects.
-   */
+  /* ── Open ───────────────────────────────────────────────────────────────── */
+
   async function open() {
     if (!_mounted) return
 
@@ -194,6 +199,7 @@ const AdministrativeActsView = (() => {
     _interferences        = []
     _users                = []
     _selectedInterference = null
+    AvailabilityView.clearMapLayers()
 
     _switchTab('atos')
 
@@ -210,10 +216,8 @@ const AdministrativeActsView = (() => {
     ])
   }
 
-  /**
-   * @description Busca interferências pelo logradouro e popula o select.
-   * @param {string} logradouro
-   */
+  /* ── Carregamento de dados ──────────────────────────────────────────────── */
+
   async function _loadInterferences(logradouro) {
     if (!logradouro) {
       _el('aaInterf').innerHTML = '<option value="">Endereço não informado</option>'
@@ -243,10 +247,6 @@ const AdministrativeActsView = (() => {
     }
   }
 
-  /**
-   * @description Busca usuários vinculados ao documento e popula o select.
-   * @param {string|number} documentId
-   */
   async function _loadUsers(documentId) {
     try {
       const rows = await window.userService.fetchByDocumentId(documentId)
@@ -264,15 +264,12 @@ const AdministrativeActsView = (() => {
     }
   }
 
-  /** @description Fallback quando o documento não tem ID. */
   function _setNoUsers() {
     _el('aaUser').innerHTML = '<option value="">Documento sem ID</option>'
   }
 
-  /**
-   * @description Atualiza o src do iframe e injeta os dados após o carregamento.
-   * Só executa quando interferência e modelo estão selecionados.
-   */
+  /* ── Template / iframe ──────────────────────────────────────────────────── */
+
   function _updateFrame() {
     const templateDir = _el('aaTemplate').value
     if (!templateDir || !_selectedInterference) return
@@ -287,7 +284,6 @@ const AdministrativeActsView = (() => {
         if (win.utils && typeof win.utils.updateHtmlDocument === 'function') {
           win.utils.updateHtmlDocument(documento, _selectedInterference)
         }
-        /* Oculta o painel de debug do diretório actions — não faz parte do documento */
         const actionsEl = win.document.getElementById('actions')
         if (actionsEl) actionsEl.style.display = 'none'
       } catch (err) {
@@ -296,12 +292,6 @@ const AdministrativeActsView = (() => {
     }
   }
 
-  /**
-   * @description Monta o objeto documento no formato esperado pelos templates.
-   * Combina dados da tela principal com a interferência e usuário selecionados.
-   * @param {string|number} selectedUserId
-   * @returns {Object}
-   */
   function _buildDocumento(selectedUserId) {
     const doc  = DocumentView.getValue()
     const addr = SelectAddress.getData()
@@ -341,10 +331,8 @@ const AdministrativeActsView = (() => {
     }
   }
 
-  /**
-   * @description Copia o HTML renderizado do iframe para a área de transferência.
-   * Fornece feedback visual alterando o texto do botão por 2 segundos.
-   */
+  /* ── Copiar / Imprimir ──────────────────────────────────────────────────── */
+
   async function _copyHtml() {
     const frame = _el('aaFrame')
     if (!frame?.contentDocument) return
@@ -367,24 +355,20 @@ const AdministrativeActsView = (() => {
     }
   }
 
-  /** @description Imprime o conteúdo do iframe. */
   function _print() {
     const frame = _el('aaFrame')
-    if (frame?.src && frame.contentWindow) {
-      frame.contentWindow.print()
-    }
+    if (frame?.src && frame.contentWindow) frame.contentWindow.print()
   }
 
-  /** @description Fecha o overlay e limpa o iframe. */
+  /* ── Close / utils ──────────────────────────────────────────────────────── */
+
   function close() {
     _el('aaOverlay')?.setAttribute('hidden', '')
     _el('aaFrame').src = ''
   }
 
-  /** @returns {boolean} */
   function isMounted() { return _mounted }
 
-  /** @param {string} id @returns {HTMLElement} */
   function _el(id) { return document.getElementById(id) }
 
   return { mount, open, close, isMounted }

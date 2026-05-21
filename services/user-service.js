@@ -4,7 +4,7 @@
  */
 
 const path          = require('path')
-const { appendJson, writeJson } = require('../utils/write-json')
+const { writeJson } = require('../utils/write-json')
 const { getAuthHeaders } = require('../utils/http-headers')
 
 const BASE_URL   = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
@@ -31,7 +31,7 @@ class UserService {
     })
     if (!res.ok) throw new Error(`save: HTTP ${res.status} ${res.statusText}`)
     const raw = await res.json()
-    appendJson(OUT_SAVE, raw)
+    writeJson(OUT_SAVE, raw)
     return raw
   }
 
@@ -49,7 +49,7 @@ class UserService {
     })
     const text = await res.text().catch(() => '')
     const data = text ? JSON.parse(text) : null
-    appendJson(OUT_DELETE, { timestamp: new Date().toISOString(), id: Number(id), status: res.status, body: data })
+    writeJson(OUT_DELETE, { timestamp: new Date().toISOString(), id: Number(id), status: res.status, body: data })
     if (!res.ok) throw new Error(`deleteById: HTTP ${res.status} ${res.statusText}`)
     if (data?.status === 'erro') throw new Error(data.mensagem ?? 'Erro ao excluir usuário.')
   }

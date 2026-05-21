@@ -278,8 +278,10 @@ const AdministrativeActsView = (() => {
     frame.src = `templates/${templateDir}/index.html`
 
     frame.onload = () => {
+
       try {
         const documento = _buildDocumento(_el('aaUser').value)
+
         const win = frame.contentWindow
         if (win.utils && typeof win.utils.updateHtmlDocument === 'function') {
           win.utils.updateHtmlDocument(documento, _selectedInterference)

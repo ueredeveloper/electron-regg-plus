@@ -37,7 +37,8 @@ class InterferenciaModel {
 	 */
 	parseOrDefault(value) {
 		let _value = Number(value);
-		return isNaN(_value) || _value === 0 ? 'Não informado' : _value;
+		if (isNaN(_value) || _value === 0) return 'Não informado';
+		return new DemandaModel().formatNumber(_value);
 	}
 	
 	// Retorno string em minúsculo com o tipo de poço, se manual ou tubular.

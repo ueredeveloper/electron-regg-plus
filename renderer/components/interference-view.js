@@ -436,6 +436,7 @@ const InterferenceView = (() => {
 
     const btn = _el('ivSave')
     btn.disabled = true
+    console.log('[InterferenceView] demandas enviadas:', JSON.parse(JSON.stringify(payload.demandas || [])))
     try {
       let result
       if (_selectedId) {

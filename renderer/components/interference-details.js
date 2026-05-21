@@ -539,9 +539,11 @@ const InterferenceDetails = (() => {
 
     const thMeses = _MESES.map(m => `<th class="id-dem-th">${m}</th>`).join('')
     const mkCells = (field) =>
-      _MESES.map((_, i) =>
-        `<td><input type="number" class="id-dem-cell" data-tab="${tab}" data-mes="${i + 1}" data-field="${field}" value="${byMes[i + 1]?.[field] ?? ''}"></td>`
-      ).join('')
+      _MESES.map((_, i) => {
+        const d   = byMes[i + 1]
+        const did = d?.id != null ? ` data-demand-id="${d.id}"` : ''
+        return `<td><input type="number" class="id-dem-cell" data-tab="${tab}" data-mes="${i + 1}" data-field="${field}"${did} value="${d?.[field] ?? ''}"></td>`
+      }).join('')
 
     table.innerHTML = `
       <thead>
@@ -703,7 +705,11 @@ const InterferenceDetails = (() => {
         const mes   = parseInt(inp.dataset.mes)
         const field = inp.dataset.field
         const val   = parseFloat(inp.value) || 0
-        if (!byMes[mes]) byMes[mes] = { mes, vazao: 0, tempo: 0, periodo: 0, tipoFinalidade: { id: tipoId } }
+        if (!byMes[mes]) {
+          byMes[mes] = { mes, vazao: 0, tempo: 0, periodo: 0, tipoFinalidade: { id: tipoId } }
+          const did = parseInt(inp.dataset.demandId)
+          if (!isNaN(did)) byMes[mes].id = did
+        }
         byMes[mes][field] = val
       })
       for (let m = 1; m <= 12; m++) {

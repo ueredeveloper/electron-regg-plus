@@ -8,6 +8,7 @@
  * - Sincroniza o token JWT com o processo main via `authService.setToken`.
  * - Atualiza o botão #btnLogin na topbar conforme estado de autenticação.
  */
+
 const LoginView = (() => {
   const SESSION_KEY  = 'reeg_session'
   const CREDS_KEY    = 'reeg_credentials'

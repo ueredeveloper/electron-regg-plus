@@ -8,6 +8,7 @@
  * Colunas exibidas: Tipo de Documento, Número, Número SEI, Processo, Endereço.
  *
  */
+
 const DocumentList = (() => {
   let _mounted    = false
   let _selectedId = null

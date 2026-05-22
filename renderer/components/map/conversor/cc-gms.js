@@ -6,6 +6,7 @@
 const CcGms = (() => {
   let _container = null
 
+  
   /**
    * @description Monta o painel GMS no container informado.
    * @param {HTMLElement} container

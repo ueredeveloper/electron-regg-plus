@@ -5,6 +5,7 @@
  * tabela de finalidades editável com linhas dinâmicas (adicionar/remover)
  * e tabela transposta de demandas mensais com preenchimento automático.
  */
+
 const InterferenceDetails = (() => {
   const _MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
   const _DIAS  = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]

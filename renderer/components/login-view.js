@@ -2,15 +2,16 @@
  * @file login-view.js
  * @description Modal de autenticação: abas "Entrar" e "Cadastrar".
  * - Abre automaticamente na inicialização se não houver sessão ativa.
- * - Persiste sessão em localStorage (chave: `reeg_session`).
- * - Salva credenciais (e-mail + senha) em localStorage (chave: `reeg_credentials`).
+ * - Persiste sessão em localStorage (chave: `regg_session`).
+ * - Salva credenciais (e-mail + senha) em localStorage (chave: `regg_credentials`).
  *   Suporta múltiplos e-mails; exibe dropdown ao focar o campo de e-mail.
  * - Sincroniza o token JWT com o processo main via `authService.setToken`.
  * - Atualiza o botão #btnLogin na topbar conforme estado de autenticação.
  */
+
 const LoginView = (() => {
-  const SESSION_KEY  = 'reeg_session'
-  const CREDS_KEY    = 'reeg_credentials'
+  const SESSION_KEY  = 'regg_session'
+  const CREDS_KEY    = 'regg_credentials'
   let _canClose = false
 
   /* ── Sessão ────────────────────────────────────────────────────────────── */

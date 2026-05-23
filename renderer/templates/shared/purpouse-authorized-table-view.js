@@ -57,8 +57,8 @@ class PurpouseAuthorizedTableView {
                 <td style="text-align: center;">${_finalidades.map(_fin => _fin.finalidade || 'Desconhecido').join('<br/><br/>')}</td>
                  <td style="text-align: center;">${_finalidades.map(_fin => _fin.subfinalidade || 'Desconhecido').join('<br/><br/>')}</td>
                 <td style="text-align: center;">${_finalidades.map(_fin => _fin.quantidade.toString().replace('.', ',') || 'N/A').join('<br/><br/>')}</td>
-                <td style="text-align: center;">${_finalidades.map(_fin => _fin.consumo || 'N/A').join('<br/><br/>')}</td>
-                <td style="text-align: center;">${_finalidades.reduce((accumulator, currentValue) => accumulator + Number(currentValue.total || 0), 0)}</td>
+                <td style="text-align: center;">${_finalidades.map(_fin => new DemandaModel().formatNumber(_fin.consumo || 0)).join('<br/><br/>')}</td>
+                <td style="text-align: center;">${new DemandaModel().formatNumber(_finalidades.reduce((acc, cur) => acc + Number(cur.total || 0), 0))}</td>
                 <td style="text-align: center;">XXX</td>
                 <td style="text-align: center;">XXX</td>
                 <td style="text-align: center;">XXX</td>

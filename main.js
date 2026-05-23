@@ -106,7 +106,7 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true
     },
-    title: 'REEG+ - Registro de Dados e Criação de Atos',
+    title: 'REGG+ - Registro de Dados e Criação de Atos',
     show: false
   })
 

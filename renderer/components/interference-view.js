@@ -10,6 +10,7 @@
  * Escuta:
  *  - `interference-list:select` → preenche formulário e notifica SelectInterference.
  */
+
 const InterferenceView = (() => {
   let _mounted        = false
   let _container      = null
@@ -436,6 +437,7 @@ const InterferenceView = (() => {
 
     const btn = _el('ivSave')
     btn.disabled = true
+    console.log('[InterferenceView] demandas enviadas:', JSON.parse(JSON.stringify(payload.demandas || [])))
     try {
       let result
       if (_selectedId) {

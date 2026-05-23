@@ -4,6 +4,7 @@
  *   - Atos Administrativos: geração de documentos via templates.
  *   - Análise de Disponibilidade: delegado ao AvailabilityView.
  */
+
 const AdministrativeActsView = (() => {
   let _mounted  = false
   let _container = null
@@ -278,8 +279,10 @@ const AdministrativeActsView = (() => {
     frame.src = `templates/${templateDir}/index.html`
 
     frame.onload = () => {
+
       try {
         const documento = _buildDocumento(_el('aaUser').value)
+
         const win = frame.contentWindow
         if (win.utils && typeof win.utils.updateHtmlDocument === 'function') {
           win.utils.updateHtmlDocument(documento, _selectedInterference)

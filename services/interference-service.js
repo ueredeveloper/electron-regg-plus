@@ -7,7 +7,7 @@
  */
 
 const path           = require('path')
-const { appendJson, writeJson } = require('../utils/write-json')
+const { writeJson } = require('../utils/write-json')
 const { getAuthHeaders } = require('../utils/http-headers')
 
 const BASE_URL          = 'https://app-sis-out-srh-backend-01-h3hkbcf5f8dubbdy.brazilsouth-01.azurewebsites.net'
@@ -47,7 +47,7 @@ class InterferenceService {
       body:    JSON.stringify(interference)
     })
     const data = await res.json().catch(() => null)
-    appendJson(SAVE_OUT, { timestamp: new Date().toISOString(), status: res.status, body: data })
+    writeJson(SAVE_OUT, { timestamp: new Date().toISOString(), status: res.status, body: data })
     if (!res.ok) throw new Error(`save: HTTP ${res.status} ${res.statusText}`)
     return data
   }
@@ -64,7 +64,7 @@ class InterferenceService {
       body:    JSON.stringify(interference)
     })
     const data = await res.json().catch(() => null)
-    appendJson(UPDATE_OUT, { timestamp: new Date().toISOString(), status: res.status, body: data })
+    writeJson(UPDATE_OUT, { timestamp: new Date().toISOString(), status: res.status, body: data })
     if (!res.ok) throw new Error(`update: HTTP ${res.status} ${res.statusText}`)
     return data
   }
@@ -81,6 +81,11 @@ class InterferenceService {
    * @returns {Promise<Object[]>} Lista de interferências brutas.
    */
   async fetchRawByKeyword(keyword) {
+
+    console
+      .log(`[InterferenceService] fetchRawByKeyword: buscando interferências para keyword="${keyword}"...`)
+
+      
     const url = `${BASE_URL}/interferences/search-interferences-by-param?param=${encodeURIComponent(keyword)}`
     const res = await fetch(url, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`fetchRawByKeyword: HTTP ${res.status} ${res.statusText}`)
@@ -96,6 +101,8 @@ class InterferenceService {
    * @returns {Promise<Object[]>} Lista de interferências brutas com demandas.
    */
   async fetchRawByAddressId(addId) {
+
+    console.log(`[InterferenceService] fetchRawByAddressId: buscando interferências para addId=${addId}...`)
     const res = await fetch(
       `${BASE_URL}/interferences/search-interferences-by-address-id?addId=${addId}`,
       { headers: getAuthHeaders() }
@@ -111,7 +118,7 @@ class InterferenceService {
     const text = await res.text().catch(() => '')
     let data = null
     try { data = text ? JSON.parse(text) : null } catch { data = null }
-    appendJson(DELETE_OUT, { timestamp: new Date().toISOString(), id, status: res.status, body: data })
+    writeJson(DELETE_OUT, { timestamp: new Date().toISOString(), id, status: res.status, body: data })
     if (!res.ok) throw new Error(`deleteById: HTTP ${res.status} ${res.statusText}`)
     if (data?.status === 'erro') throw new Error(data.mensagem ?? 'Erro ao excluir interferência.')
   }

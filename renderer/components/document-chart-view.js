@@ -4,6 +4,7 @@
  * Sobrepõe o painel direito (igual ao AdministrativeActsView) e carrega
  * relations-charts/document-chart.html num iframe, injetando os dados via contentWindow.
  */
+
 const DocumentChartView = (() => {
   let _mounted   = false
   let _container = null

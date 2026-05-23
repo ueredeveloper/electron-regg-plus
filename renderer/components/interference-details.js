@@ -5,12 +5,14 @@
  * tabela de finalidades editável com linhas dinâmicas (adicionar/remover)
  * e tabela transposta de demandas mensais com preenchimento automático.
  */
+
 const InterferenceDetails = (() => {
   const _MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
   const _DIAS  = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   const _CHUVA = new Set([1, 2, 3, 11, 12])  // jan fev mar nov dez
 
   let _mounted            = false
+  let _lastPorosoItems    = []   // cache do listAll() para lookup de codPlan/qMedia
   let _lastFraturadoItems = []   // cache do listAll() para filtragem de subsistemas
 
   /**
@@ -106,6 +108,7 @@ const InterferenceDetails = (() => {
     _el('idCopyReqBtn').addEventListener('click', _copyReqToAuth)
     _el('idTipoPoco').addEventListener('change', () => _onTipoPocoChange(true))
     _el('idSistema').addEventListener('change', _onSistemaChange)
+    _el('idSubsistema').addEventListener('change', _onSubsistemaChange)
     _el('idCodSistema').addEventListener('change', _onCodSistemaChange)
     _mounted = true
   }
@@ -165,14 +168,14 @@ const InterferenceDetails = (() => {
    * Se finalidades/demandas forem vazias, inicializa com uma linha em branco.
    * @param {Object} r - Interferência normalizada por interference-service._normalize().
    */
-  function fill(r) {
+  async function fill(r) {
     if (!_mounted) return
 
     _setSelectValue('idTipoPoco', r.tipoPoco)
-    _el('idCaebs').value          = r.caesb != null ? String(r.caesb) : ''
-    _el('idCodSistema').value     = r.codigoSubsistema ?? ''
-    _onTipoPocoChange()  // async — popula idSistema/idSubsistema e auto-seleciona pelo ponto
-    _el('idVazaoSistema').value    = r.vazaoSistema     ?? ''
+    _el('idCaebs').value = r.caesb != null ? String(r.caesb) : ''
+
+    if (r.tipoPoco != null) await _onTipoPocoChange(true)
+
     _el('idVazaoOutorgavel').value = r.vazaoOutorgavel  ?? ''
     _el('idVazaoTeste').value      = r.vazaoTeste       ?? ''
     _el('idNivelEstatico').value   = r.nivelEstatico    ?? ''
@@ -295,12 +298,13 @@ const InterferenceDetails = (() => {
    * @param {Array<{id, codPlan, descricao}>} items
    */
   function _fillSistemaSelectPoroso(items) {
+    _lastPorosoItems = items
     const seen = new Set()
     const opts = []
     items.forEach(p => {
       if (!seen.has(p.descricao)) {
         seen.add(p.descricao)
-        opts.push(`<option value="${p.id}" data-cod="${_esc(p.codPlan ?? '')}">${_esc(p.descricao)}</option>`)
+        opts.push(`<option value="${p.id}" data-cod="${_esc(p.codPlan ?? '')}" data-qmedia="${p.qMedia ?? ''}">${_esc(p.descricao)}</option>`)
       }
     })
     _el('idSistema').innerHTML = `<option value="">Selecione...</option>${opts.join('')}`
@@ -336,7 +340,7 @@ const InterferenceDetails = (() => {
       .forEach(f => {
         if (!seen.has(f.subsistema)) {
           seen.add(f.subsistema)
-          opts.push(`<option value="${f.id}" data-cod="${_esc(f.codPlan ?? '')}">${_esc(f.subsistema)}</option>`)
+          opts.push(`<option value="${f.id}" data-cod="${_esc(f.codPlan ?? '')}" data-vazao="${f.vazao ?? ''}">${_esc(f.subsistema)}</option>`)
         }
       })
     _el('idSubsistema').innerHTML = `<option value="">Selecione...</option>${opts.join('')}`
@@ -351,6 +355,7 @@ const InterferenceDetails = (() => {
     const opt = Array.from(sel.options).find(o => o.text === item.descricao)
     if (opt) sel.value = opt.value
     _el('idCodSistema').value = item.codPlan ?? ''
+    if (item.qMedia != null) _el('idVazaoSistema').value = Math.round(item.qMedia * 1000)
   }
 
   /**
@@ -364,6 +369,7 @@ const InterferenceDetails = (() => {
     const opt    = Array.from(subSel.options).find(o => o.text === item.subsistema)
     if (opt) subSel.value = opt.value
     _el('idCodSistema').value = item.codPlan ?? ''
+    if (item.vazao != null) _el('idVazaoSistema').value = Math.round(item.vazao * 1000)
   }
 
   /**
@@ -375,11 +381,25 @@ const InterferenceDetails = (() => {
     if (!opt?.value) return
 
     if (text.includes('manual') || text.includes('raso')) {
-      _el('idCodSistema').value = opt.dataset.cod ?? ''
+      const item = _lastPorosoItems.find(p => String(p.id) === opt.value)
+      _el('idCodSistema').value = item?.codPlan ?? opt.dataset.cod ?? ''
+      const qMedia = item?.qMedia ?? parseFloat(opt.dataset.qmedia)
+      if (qMedia != null && !isNaN(qMedia)) _el('idVazaoSistema').value = Math.round(qMedia * 1000)
     } else if (text.includes('profundo')) {
       _filterSubsistemas(opt.value)
       _el('idCodSistema').value = ''
     }
+  }
+
+  /**
+   * @description Reage à mudança de #idSubsistema (fraturado): preenche código e vazão do subsistema.
+   */
+  function _onSubsistemaChange() {
+    const opt = _el('idSubsistema').selectedOptions[0]
+    if (!opt?.value) return
+    _el('idCodSistema').value = opt.dataset.cod ?? ''
+    const vazao = parseFloat(opt.dataset.vazao)
+    if (!isNaN(vazao)) _el('idVazaoSistema').value = Math.round(vazao * 1000)
   }
 
   /**
@@ -541,9 +561,11 @@ const InterferenceDetails = (() => {
 
     const thMeses = _MESES.map(m => `<th class="id-dem-th">${m}</th>`).join('')
     const mkCells = (field) =>
-      _MESES.map((_, i) =>
-        `<td><input type="number" class="id-dem-cell" data-tab="${tab}" data-mes="${i + 1}" data-field="${field}" value="${byMes[i + 1]?.[field] ?? ''}"></td>`
-      ).join('')
+      _MESES.map((_, i) => {
+        const d   = byMes[i + 1]
+        const did = d?.id != null ? ` data-demand-id="${d.id}"` : ''
+        return `<td><input type="number" class="id-dem-cell" data-tab="${tab}" data-mes="${i + 1}" data-field="${field}"${did} value="${d?.[field] ?? ''}"></td>`
+      }).join('')
 
     table.innerHTML = `
       <thead>
@@ -705,7 +727,11 @@ const InterferenceDetails = (() => {
         const mes   = parseInt(inp.dataset.mes)
         const field = inp.dataset.field
         const val   = parseFloat(inp.value) || 0
-        if (!byMes[mes]) byMes[mes] = { mes, vazao: 0, tempo: 0, periodo: 0, tipoFinalidade: { id: tipoId } }
+        if (!byMes[mes]) {
+          byMes[mes] = { mes, vazao: 0, tempo: 0, periodo: 0, tipoFinalidade: { id: tipoId } }
+          const did = parseInt(inp.dataset.demandId)
+          if (!isNaN(did)) byMes[mes].id = did
+        }
         byMes[mes][field] = val
       })
       for (let m = 1; m <= 12; m++) {

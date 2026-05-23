@@ -10,6 +10,7 @@
  * Escuta:
  *  - `address-list:select` → preenche formulário e notifica SelectAddress.
  */
+
 const AddressView = (() => {
   let _mounted      = false
   let _container    = null

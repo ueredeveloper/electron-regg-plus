@@ -216,7 +216,7 @@ const SettingsPanel = (() => {
   }
 
   async function _persistFontSize(size) {
-    localStorage.setItem('reegg-font-size', String(size))
+    localStorage.setItem('regg-font-size', String(size))
     try {
       const s = await window.appService.loadSettings()
       await window.appService.saveSettings({ ...s, fontSize: String(size) })
@@ -227,9 +227,9 @@ const SettingsPanel = (() => {
     let size = '14'
     try {
       const s = await window.appService.loadSettings()
-      size = s?.fontSize || localStorage.getItem('reegg-font-size') || '14'
+      size = s?.fontSize || localStorage.getItem('regg-font-size') || '14'
     } catch {
-      size = localStorage.getItem('reegg-font-size') || '14'
+      size = localStorage.getItem('regg-font-size') || '14'
     }
     _applyFontSize(size)
     _markActiveFont(size)
@@ -259,7 +259,7 @@ const SettingsPanel = (() => {
    * @param {string} themeId
    */
   async function _persistTheme(themeId) {
-    localStorage.setItem('reegg-theme', themeId)
+    localStorage.setItem('regg-theme', themeId)
     try {
       const s = await window.appService.loadSettings()
       await window.appService.saveSettings({ ...s, theme: themeId })
@@ -277,10 +277,10 @@ const SettingsPanel = (() => {
       if (settings?.theme) {
         themeId = settings.theme
       } else {
-        themeId = localStorage.getItem('reegg-theme') || 'padrao'
+        themeId = localStorage.getItem('regg-theme') || 'padrao'
       }
     } catch {
-      themeId = localStorage.getItem('reegg-theme') || 'padrao'
+      themeId = localStorage.getItem('regg-theme') || 'padrao'
     }
     _applyTheme(themeId)
     _markActive(themeId)
@@ -390,7 +390,7 @@ const SettingsPanel = (() => {
     table.hidden   = true
 
     try {
-      const session = JSON.parse(localStorage.getItem('reeg_session') || 'null')
+      const session = JSON.parse(localStorage.getItem('regg_session') || 'null')
       const isAdmin = session?.colaborador?.admin === true
 
       const list = await window.colaboradorService.fetchAll()

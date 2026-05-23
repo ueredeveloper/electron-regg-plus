@@ -27,3 +27,6 @@ out/
 # Cache
 .cache/node_modules/ 
 dist/ 
+
+# Oculta a lista de afazeres
+to-do-list.md

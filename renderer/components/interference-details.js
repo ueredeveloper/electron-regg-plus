@@ -123,8 +123,8 @@ const InterferenceDetails = (() => {
               <th>Finalidade</th>
               <th>Subfinalidade</th>
               <th class="id-col-n">Qtd</th>
-              <th class="id-col-n">Total</th>
               <th class="id-col-n">Consumo</th>
+              <th class="id-col-n">Total</th>
               <th class="id-col-acts"></th>
             </tr>
           </thead>
@@ -456,11 +456,11 @@ const InterferenceDetails = (() => {
       <td><input type="text"   class="id-fin-input"             value="${_esc(f.finalidade    ?? '')}"></td>
       <td><input type="text"   class="id-fin-input"             value="${_esc(f.subfinalidade ?? '')}"></td>
       <td><input type="number" class="id-fin-input id-fin-qtd"  value="${f.quantidade ?? ''}"></td>
-      <td><input type="number" class="id-fin-input id-fin-vtot" value="${f.total      ?? ''}"></td>
       <td><input type="number" class="id-fin-input id-fin-cons" value="${f.consumo    ?? ''}"></td>
+      <td><input type="number" class="id-fin-input id-fin-vtot" value="${f.total      ?? ''}"></td>
       <td class="id-fin-actions">
         <button type="button" class="id-calc-btn" title="Consumo = Qtd × Total">
-          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="3"
                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -473,8 +473,8 @@ const InterferenceDetails = (() => {
 
     tr.querySelector('.id-calc-btn').addEventListener('click', () => {
       const qtd  = parseFloat(tr.querySelector('.id-fin-qtd').value)  || 0
-      const vtot = parseFloat(tr.querySelector('.id-fin-vtot').value) || 0
-      tr.querySelector('.id-fin-cons').value = (qtd * vtot).toFixed(2)
+      const cons = parseFloat(tr.querySelector('.id-fin-cons').value) || 0
+      tr.querySelector('.id-fin-vtot').value = (qtd * cons).toFixed(2)
       _updateFinTotal(tab)
     })
 
@@ -490,7 +490,7 @@ const InterferenceDetails = (() => {
       _updateFinTotal(tab)
     })
 
-    tr.querySelector('.id-fin-cons').addEventListener('input', () => _updateFinTotal(tab))
+    tr.querySelector('.id-fin-vtot').addEventListener('input', () => _updateFinTotal(tab))
 
     if (afterRow) afterRow.insertAdjacentElement('afterend', tr)
     else          tbody.appendChild(tr)
@@ -513,8 +513,8 @@ const InterferenceDetails = (() => {
         finalidade:    inputs[0].value,
         subfinalidade: inputs[1].value,
         quantidade:    parseFloat(inputs[2].value) || undefined,
-        total:         parseFloat(inputs[3].value) || undefined,
-        consumo:       parseFloat(inputs[4].value) || undefined
+        consumo:       parseFloat(inputs[3].value) || undefined,
+        total:         parseFloat(inputs[4].value) || undefined
       })
     })
     _updateFinTotal('Auth')
@@ -541,7 +541,7 @@ const InterferenceDetails = (() => {
   }
 
   function _getFinTotal(tab) {
-    return Array.from(_el(`idFin${tab}Body`).querySelectorAll('.id-fin-cons'))
+    return Array.from(_el(`idFin${tab}Body`).querySelectorAll('.id-fin-vtot'))
       .reduce((acc, inp) => acc + (parseFloat(inp.value) || 0), 0)
   }
 
@@ -700,8 +700,8 @@ const InterferenceDetails = (() => {
           finalidade:     inputs[0].value.trim(),
           subfinalidade:  inputs[1].value.trim(),
           quantidade:     parseFloat(inputs[2].value) || 0,
-          total:          parseFloat(inputs[3].value) || 0,
-          consumo:        parseFloat(inputs[4].value) || 0,
+          consumo:        parseFloat(inputs[3].value) || 0,
+          total:          parseFloat(inputs[4].value) || 0,
           tipoFinalidade: { id: tipoId }
         }
         const finId = parseInt(tr.dataset.finalidadeId)

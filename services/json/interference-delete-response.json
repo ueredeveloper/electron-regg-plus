@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-05-23T00:09:14.748Z",
-  "id": "505",
+  "timestamp": "2026-05-26T19:24:14.937Z",
+  "id": "145",
   "status": 201,
   "body": {
     "object": {
-      "id": 505
+      "id": 145
     },
     "status": "sucesso",
-    "mensagem": "Interferência 505 e seus registros relacionados foram deletados com sucesso."
+    "mensagem": "Interferência 145 e seus registros relacionados foram deletados com sucesso."
   }
 }

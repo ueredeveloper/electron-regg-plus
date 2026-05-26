@@ -21,7 +21,7 @@ class SignatureView {
         let innerHTML = `
             <div>
                 <p style="text-align: center;"><strong>SAULO GREGORY LUZZI</strong></p>
-                <p style="text-align: center;">Cordenador de Outorgas - COUT/SRH</p>
+                <p style="text-align: center;">Coordenador de Outorgas - COUT/SRH</p>
             </div>
             `;
         if (this.div !== null) this.div.innerHTML = innerHTML;

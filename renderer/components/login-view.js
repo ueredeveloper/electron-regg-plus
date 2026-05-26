@@ -169,7 +169,7 @@ const LoginView = (() => {
         <button type="button" class="lv-close" id="lvClose" title="Fechar">×</button>
 
         <div class="lv-brand">
-          <span class="lv-brand-name">R E E G +</span>
+          <span class="lv-brand-name">R E G G +</span>
           <span class="lv-brand-sub">Acesso ao sistema</span>
         </div>
 

@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-05-27T00:21:27.540Z",
+  "timestamp": "2026-05-27T12:07:23.506Z",
   "params": {
-    "lat": -15.952976,
-    "lng": -47.518309
+    "lat": -15.628764,
+    "lng": -47.9309829
   },
   "result": [
     {
-      "id": 64,
-      "codPlan": "066_22_F",
-      "sistema": "Canastra",
-      "subsistema": "F",
-      "vazao": 7.5
+      "id": 120,
+      "codPlan": "056_18_R3/Q3",
+      "sistema": "Paranoá",
+      "subsistema": "R3/Q3",
+      "vazao": 12
     }
   ]
 }

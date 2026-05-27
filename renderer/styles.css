@@ -1397,8 +1397,8 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
 .id-fin-table th:nth-child(6) { width: 120px; }
 
 /* Alinhamento vertical e padding das células */
-.id-fin-table tbody td       { vertical-align: middle; padding: 4px; }
-.id-fin-table tbody td:nth-child(6) { padding: 4px 2px; }
+.id-fin-table tbody td       { vertical-align: middle; padding: 4px; overflow: visible; }
+.id-fin-table tbody td:nth-child(6) { padding: 4px 2px; overflow: visible; }
 
 .id-fin-wrap .doc-list-table thead th {
   background: #cffafe;
@@ -1433,10 +1433,10 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 9px;
   padding: 0;
-  height: 32px;
-  margin-top: 4px;
+  height: 28px;
+  margin-top: 6px;
 }
 
 /* botão calcular consumo = qtd × total */
@@ -1444,8 +1444,8 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
   border: 1px solid #a5f3fc;
   border-radius: 4px;
@@ -1462,13 +1462,13 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
   border: 1px solid;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 700;
   line-height: 1;
   padding: 0;

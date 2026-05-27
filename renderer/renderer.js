@@ -32,8 +32,8 @@ InputClear.init()
 
 
 const map = L.map('map', {
-  center: [-15.7801, -47.9292],
-  zoom: 7,
+  center: [-15.7801, -47.8292],
+  zoom: 9,
   zoomControl: true
 })
 

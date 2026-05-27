@@ -6,6 +6,7 @@
  *  - `annex-list:select`  → linha clicada { id, label, numero, procNumero, usuarioNome }.
  *  - `annex-list:deleted` → anexo excluído com sucesso { id }.
  */
+
 const AnnexList = (() => {
   let _mounted = false
 

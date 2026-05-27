@@ -3,6 +3,7 @@
  * @description Painel GMS do conversor de coordenadas. Emite o evento `cc:converted`
  * com `{ lat, lon }` ao realizar a conversão.
  */
+
 const CcGms = (() => {
   let _container = null
 

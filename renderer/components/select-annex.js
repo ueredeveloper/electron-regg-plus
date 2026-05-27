@@ -6,6 +6,7 @@
  * Mínimo de 2 caracteres para ativar a pesquisa.
  * TODO: conectar ao banco via `window.db.searchAnnex(term)`.
  */
+
 const SelectAnnex = (() => {
   let _mounted      = false
   let _selectedId   = null

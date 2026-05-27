@@ -6,6 +6,7 @@
  * ou digitadas manualmente. Emite o evento `interference:goto` para
  * que o renderer.js reposicione o marcador no mapa.
  */
+
 const SelectInterference = (() => {
   let _mounted = false
 

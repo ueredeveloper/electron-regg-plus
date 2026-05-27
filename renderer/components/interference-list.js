@@ -8,6 +8,7 @@
  *  - `interference-list:deleted` → interferência excluída com sucesso { id }.
  */
 
+
 const InterferenceList = (() => {
   let _mounted = false
   let _ifRows  = []

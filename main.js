@@ -110,6 +110,7 @@ function createWindow() {
     show: false
   })
 
+  
   win.loadFile(path.join(__dirname, 'renderer', 'index.html'))
 
   win.once('ready-to-show', () => {

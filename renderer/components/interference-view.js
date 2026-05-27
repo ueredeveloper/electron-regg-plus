@@ -11,6 +11,7 @@
  *  - `interference-list:select` → preenche formulário e notifica SelectInterference.
  */
 
+
 const InterferenceView = (() => {
   let _mounted        = false
   let _container      = null

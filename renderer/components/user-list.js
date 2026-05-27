@@ -5,6 +5,7 @@
  *  - `user-list:select`  → linha clicada { id, nome, cpfCnpj, label }.
  *  - `user-list:deleted` → usuário excluído com sucesso { id }.
  */
+
 const UserList = (() => {
   let _mounted = false
 

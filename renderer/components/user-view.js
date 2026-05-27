@@ -10,6 +10,7 @@
  * Escuta:
  *  - `user-list:select` → preenche formulário e notifica SelectUser.
  */
+
 const UserView = (() => {
   let _mounted      = false
   let _container    = null

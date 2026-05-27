@@ -4,6 +4,7 @@
  * e verificação de atualização de versão. O tema escolhido é persistido
  * em localStorage e reaplicado automaticamente ao iniciar o app.
  */
+
 const SettingsPanel = (() => {
   let _mounted    = false
   let _currentZoom = 1

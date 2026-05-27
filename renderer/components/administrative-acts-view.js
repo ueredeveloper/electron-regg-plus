@@ -5,6 +5,7 @@
  *   - Análise de Disponibilidade: delegado ao AvailabilityView.
  */
 
+
 const AdministrativeActsView = (() => {
   let _mounted  = false
   let _container = null

@@ -10,6 +10,7 @@
  * Escuta:
  *  - `process-list:select` → preenche formulário e notifica SelectProcess.
  */
+
 const ProcessView = (() => {
   let _mounted         = false
   let _container       = null

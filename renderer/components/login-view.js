@@ -9,6 +9,7 @@
  * - Atualiza o botão #btnLogin na topbar conforme estado de autenticação.
  */
 
+
 const LoginView = (() => {
   const SESSION_KEY  = 'regg_session'
   const CREDS_KEY    = 'regg_credentials'

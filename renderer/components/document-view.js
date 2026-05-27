@@ -4,6 +4,7 @@
  * Exibe os campos: tipo de documento, número e número SEI em uma única linha.
  * Os tipos são carregados da tabela `documento_tipo`.
  */
+
 const DocumentView = (() => {
   let _mounted    = false
   let _selectedId = null

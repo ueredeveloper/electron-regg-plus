@@ -3,6 +3,7 @@
  * @description Painel GMS do conversor de coordenadas. Emite o evento `cc:converted`
  * com `{ lat, lon }` ao realizar a conversão.
  */
+
 const CcGms = (() => {
   let _container = null
 
@@ -24,14 +25,14 @@ const CcGms = (() => {
         <div class="cc-field narrow"><label>Lat °</label><input type="number" id="ccGmsLatD" value="15"></div>
         <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLatM" value="46"></div>
         <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLatS" value="32.012" step="0.001"></div>
-        <div class="cc-field narrow">
+        <div class="cc-field dir">
           <label>Dir.</label>
           <select id="ccGmsLatDir"><option value="S">S</option><option value="N">N</option></select>
         </div>
         <div class="cc-field narrow"><label>Lon °</label><input type="number" id="ccGmsLonD" value="47"></div>
         <div class="cc-field narrow"><label>′</label><input type="number" id="ccGmsLonM" value="56"></div>
         <div class="cc-field sec"><label>″</label><input type="number" id="ccGmsLonS" value="27.067" step="0.001"></div>
-        <div class="cc-field narrow">
+        <div class="cc-field dir">
           <label>Dir.</label>
           <select id="ccGmsLonDir"><option value="W">W</option><option value="E">E</option></select>
         </div>

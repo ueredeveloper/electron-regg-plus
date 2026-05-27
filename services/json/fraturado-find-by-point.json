@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-05-21T18:16:21.175Z",
+  "timestamp": "2026-05-27T00:21:27.540Z",
   "params": {
-    "lat": -15.883882,
-    "lng": -47.786104
+    "lat": -15.952976,
+    "lng": -47.518309
   },
   "result": [
     {
-      "id": 60,
-      "codPlan": "071_24_F/Q/M",
+      "id": 64,
+      "codPlan": "066_22_F",
       "sistema": "Canastra",
-      "subsistema": "F/Q/M",
-      "vazao": 33
+      "subsistema": "F",
+      "vazao": 7.5
     }
   ]
 }

@@ -6,12 +6,14 @@
  * e tabela transposta de demandas mensais com preenchimento automático.
  */
 
+
 const InterferenceDetails = (() => {
   const _MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
   const _DIAS  = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   const _CHUVA = new Set([1, 2, 3, 11, 12])  // jan fev mar nov dez
 
   let _mounted            = false
+  let _lastPorosoItems    = []   // cache do listAll() para lookup de codPlan/qMedia
   let _lastFraturadoItems = []   // cache do listAll() para filtragem de subsistemas
 
   /**
@@ -107,6 +109,7 @@ const InterferenceDetails = (() => {
     _el('idCopyReqBtn').addEventListener('click', _copyReqToAuth)
     _el('idTipoPoco').addEventListener('change', () => _onTipoPocoChange(true))
     _el('idSistema').addEventListener('change', _onSistemaChange)
+    _el('idSubsistema').addEventListener('change', _onSubsistemaChange)
     _el('idCodSistema').addEventListener('change', _onCodSistemaChange)
     _mounted = true
   }
@@ -121,8 +124,8 @@ const InterferenceDetails = (() => {
               <th>Finalidade</th>
               <th>Subfinalidade</th>
               <th class="id-col-n">Qtd</th>
-              <th class="id-col-n">Total</th>
               <th class="id-col-n">Consumo</th>
+              <th class="id-col-n">Total</th>
               <th class="id-col-acts"></th>
             </tr>
           </thead>
@@ -166,14 +169,14 @@ const InterferenceDetails = (() => {
    * Se finalidades/demandas forem vazias, inicializa com uma linha em branco.
    * @param {Object} r - Interferência normalizada por interference-service._normalize().
    */
-  function fill(r) {
+  async function fill(r) {
     if (!_mounted) return
 
     _setSelectValue('idTipoPoco', r.tipoPoco)
-    _el('idCaebs').value          = r.caesb != null ? String(r.caesb) : ''
-    _el('idCodSistema').value     = r.codigoSubsistema ?? ''
-    _onTipoPocoChange()  // async — popula idSistema/idSubsistema e auto-seleciona pelo ponto
-    _el('idVazaoSistema').value    = r.vazaoSistema     ?? ''
+    _el('idCaebs').value = r.caesb != null ? String(r.caesb) : ''
+
+    if (r.tipoPoco != null) await _onTipoPocoChange(true)
+
     _el('idVazaoOutorgavel').value = r.vazaoOutorgavel  ?? ''
     _el('idVazaoTeste').value      = r.vazaoTeste       ?? ''
     _el('idNivelEstatico').value   = r.nivelEstatico    ?? ''
@@ -296,12 +299,13 @@ const InterferenceDetails = (() => {
    * @param {Array<{id, codPlan, descricao}>} items
    */
   function _fillSistemaSelectPoroso(items) {
+    _lastPorosoItems = items
     const seen = new Set()
     const opts = []
     items.forEach(p => {
       if (!seen.has(p.descricao)) {
         seen.add(p.descricao)
-        opts.push(`<option value="${p.id}" data-cod="${_esc(p.codPlan ?? '')}">${_esc(p.descricao)}</option>`)
+        opts.push(`<option value="${p.id}" data-cod="${_esc(p.codPlan ?? '')}" data-qmedia="${p.qMedia ?? ''}">${_esc(p.descricao)}</option>`)
       }
     })
     _el('idSistema').innerHTML = `<option value="">Selecione...</option>${opts.join('')}`
@@ -337,7 +341,7 @@ const InterferenceDetails = (() => {
       .forEach(f => {
         if (!seen.has(f.subsistema)) {
           seen.add(f.subsistema)
-          opts.push(`<option value="${f.id}" data-cod="${_esc(f.codPlan ?? '')}">${_esc(f.subsistema)}</option>`)
+          opts.push(`<option value="${f.id}" data-cod="${_esc(f.codPlan ?? '')}" data-vazao="${f.vazao ?? ''}">${_esc(f.subsistema)}</option>`)
         }
       })
     _el('idSubsistema').innerHTML = `<option value="">Selecione...</option>${opts.join('')}`
@@ -352,6 +356,7 @@ const InterferenceDetails = (() => {
     const opt = Array.from(sel.options).find(o => o.text === item.descricao)
     if (opt) sel.value = opt.value
     _el('idCodSistema').value = item.codPlan ?? ''
+    if (item.qMedia != null) _el('idVazaoSistema').value = Math.round(item.qMedia * 1000)
   }
 
   /**
@@ -365,6 +370,7 @@ const InterferenceDetails = (() => {
     const opt    = Array.from(subSel.options).find(o => o.text === item.subsistema)
     if (opt) subSel.value = opt.value
     _el('idCodSistema').value = item.codPlan ?? ''
+    if (item.vazao != null) _el('idVazaoSistema').value = Math.round(item.vazao * 1000)
   }
 
   /**
@@ -376,11 +382,25 @@ const InterferenceDetails = (() => {
     if (!opt?.value) return
 
     if (text.includes('manual') || text.includes('raso')) {
-      _el('idCodSistema').value = opt.dataset.cod ?? ''
+      const item = _lastPorosoItems.find(p => String(p.id) === opt.value)
+      _el('idCodSistema').value = item?.codPlan ?? opt.dataset.cod ?? ''
+      const qMedia = item?.qMedia ?? parseFloat(opt.dataset.qmedia)
+      if (qMedia != null && !isNaN(qMedia)) _el('idVazaoSistema').value = Math.round(qMedia * 1000)
     } else if (text.includes('profundo')) {
       _filterSubsistemas(opt.value)
       _el('idCodSistema').value = ''
     }
+  }
+
+  /**
+   * @description Reage à mudança de #idSubsistema (fraturado): preenche código e vazão do subsistema.
+   */
+  function _onSubsistemaChange() {
+    const opt = _el('idSubsistema').selectedOptions[0]
+    if (!opt?.value) return
+    _el('idCodSistema').value = opt.dataset.cod ?? ''
+    const vazao = parseFloat(opt.dataset.vazao)
+    if (!isNaN(vazao)) _el('idVazaoSistema').value = Math.round(vazao * 1000)
   }
 
   /**
@@ -437,11 +457,11 @@ const InterferenceDetails = (() => {
       <td><input type="text"   class="id-fin-input"             value="${_esc(f.finalidade    ?? '')}"></td>
       <td><input type="text"   class="id-fin-input"             value="${_esc(f.subfinalidade ?? '')}"></td>
       <td><input type="number" class="id-fin-input id-fin-qtd"  value="${f.quantidade ?? ''}"></td>
-      <td><input type="number" class="id-fin-input id-fin-vtot" value="${f.total      ?? ''}"></td>
       <td><input type="number" class="id-fin-input id-fin-cons" value="${f.consumo    ?? ''}"></td>
+      <td><input type="number" class="id-fin-input id-fin-vtot" value="${f.total      ?? ''}"></td>
       <td class="id-fin-actions">
         <button type="button" class="id-calc-btn" title="Consumo = Qtd × Total">
-          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="3"
                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -454,8 +474,8 @@ const InterferenceDetails = (() => {
 
     tr.querySelector('.id-calc-btn').addEventListener('click', () => {
       const qtd  = parseFloat(tr.querySelector('.id-fin-qtd').value)  || 0
-      const vtot = parseFloat(tr.querySelector('.id-fin-vtot').value) || 0
-      tr.querySelector('.id-fin-cons').value = qtd * vtot
+      const cons = parseFloat(tr.querySelector('.id-fin-cons').value) || 0
+      tr.querySelector('.id-fin-vtot').value = (qtd * cons).toFixed(2)
       _updateFinTotal(tab)
     })
 
@@ -471,7 +491,7 @@ const InterferenceDetails = (() => {
       _updateFinTotal(tab)
     })
 
-    tr.querySelector('.id-fin-cons').addEventListener('input', () => _updateFinTotal(tab))
+    tr.querySelector('.id-fin-vtot').addEventListener('input', () => _updateFinTotal(tab))
 
     if (afterRow) afterRow.insertAdjacentElement('afterend', tr)
     else          tbody.appendChild(tr)
@@ -494,8 +514,8 @@ const InterferenceDetails = (() => {
         finalidade:    inputs[0].value,
         subfinalidade: inputs[1].value,
         quantidade:    parseFloat(inputs[2].value) || undefined,
-        total:         parseFloat(inputs[3].value) || undefined,
-        consumo:       parseFloat(inputs[4].value) || undefined
+        consumo:       parseFloat(inputs[3].value) || undefined,
+        total:         parseFloat(inputs[4].value) || undefined
       })
     })
     _updateFinTotal('Auth')
@@ -516,11 +536,13 @@ const InterferenceDetails = (() => {
 
   function _updateFinTotal(tab) {
     const sum = _getFinTotal(tab)
-    _el(`idFin${tab}Sum`).textContent = sum ? sum.toLocaleString('pt-BR') : '—'
+    _el(`idFin${tab}Sum`).textContent = sum
+      ? sum.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      : '—'
   }
 
   function _getFinTotal(tab) {
-    return Array.from(_el(`idFin${tab}Body`).querySelectorAll('.id-fin-cons'))
+    return Array.from(_el(`idFin${tab}Body`).querySelectorAll('.id-fin-vtot'))
       .reduce((acc, inp) => acc + (parseFloat(inp.value) || 0), 0)
   }
 
@@ -608,11 +630,11 @@ const InterferenceDetails = (() => {
     const action = btn.dataset.action
 
     if (action === 'vazao-all') {
-      const total = _getFinTotal(tab)
+      const total = parseFloat(_getFinTotal(tab).toFixed(2))
       table.querySelectorAll('[data-field="vazao"]').forEach(inp => { inp.value = total })
 
     } else if (action === 'vazao-dry') {
-      const total = _getFinTotal(tab)
+      const total = parseFloat(_getFinTotal(tab).toFixed(2))
       table.querySelectorAll('[data-field="vazao"]').forEach(inp => {
         inp.value = _CHUVA.has(+inp.dataset.mes) ? 0 : total
       })
@@ -679,8 +701,8 @@ const InterferenceDetails = (() => {
           finalidade:     inputs[0].value.trim(),
           subfinalidade:  inputs[1].value.trim(),
           quantidade:     parseFloat(inputs[2].value) || 0,
-          total:          parseFloat(inputs[3].value) || 0,
-          consumo:        parseFloat(inputs[4].value) || 0,
+          consumo:        parseFloat(inputs[3].value) || 0,
+          total:          parseFloat(inputs[4].value) || 0,
           tipoFinalidade: { id: tipoId }
         }
         const finId = parseInt(tr.dataset.finalidadeId)

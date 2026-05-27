@@ -6,6 +6,7 @@
  * ou digitadas manualmente. Emite o evento `interference:goto` para
  * que o renderer.js reposicione o marcador no mapa.
  */
+
 const SelectInterference = (() => {
   let _mounted = false
 
@@ -72,6 +73,22 @@ const SelectInterference = (() => {
                 <circle cx="12" cy="10" r="3"/>
               </svg>
             </button>
+            <!-- Conversor de coordenadas + mapa fullscreen -->
+            <button
+              type="button"
+              class="btn-map-icon"
+              id="btnIfConverter"
+              title="Conversor de coordenadas"
+              aria-label="Abrir conversor de coordenadas"
+              style="margin-left: 10px"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 16V4m0 0L3 8m4-4 4 4"/>
+                <path d="M17 8v12m0 0 4-4m-4 4-4-4"/>
+              </svg>
+            </button>
           </div>
         </div>
       </fieldset>
@@ -85,6 +102,9 @@ const SelectInterference = (() => {
    */
   function _bindEvents() {
     _el('btnIfGoto').addEventListener('click', _dispatchGoto)
+    _el('btnIfConverter').addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('iv:open-coord-converter'))
+    })
     _el('ifOpenDrawer').addEventListener('click', () => InterferenceView.open())
 
     const onEnter = (e) => { if (e.key === 'Enter') _dispatchGoto() }

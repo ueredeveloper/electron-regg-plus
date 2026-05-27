@@ -1,4 +1,4 @@
-*, *::before, *::after {
+﻿*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -230,7 +230,7 @@ html, body {
   transform: translateX(-50%);
   z-index: 400;
   width: calc(100% - 16px);
-  max-width: 780px;
+  max-width: 1060px;
   pointer-events: none;
 }
 
@@ -320,15 +320,16 @@ html, body {
 .cc-row {
   display: flex;
   align-items: flex-end;
-  justify-content: center;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .cc-field {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
+  min-width: 0;
 }
 
 .cc-field label {
@@ -345,21 +346,25 @@ html, body {
   border-radius: 4px;
   font-size: 12px;
   background: var(--bg);
-  width: 80px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.cc-field.grow input {
-  width: 140px;
+.cc-field.grow {
+  flex: 2;
 }
 
-.cc-field.narrow input,
-.cc-field.narrow select {
-  width: 58px;
+.cc-field.narrow {
+  flex: 0 0 88px;
+}
+
+.cc-field.dir {
+  flex: 0 0 58px;
 }
 
 /* input de segundos (GMS) */
-.cc-field.sec input {
-  width: 76px;
+.cc-field.sec {
+  flex: 1.2;
 }
 
 .cc-convert-btn {
@@ -456,7 +461,7 @@ html, body {
 /* ── FORM PANEL ── */
 .form-panel {
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
   padding: 14px;
   background: var(--bg);
@@ -1381,18 +1386,19 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
 }
 
 /* tabela de finalidades */
-.id-fin-wrap  { max-height: 160px; border-color: #a5f3fc; }
+.id-fin-wrap  { max-height: 220px; border-color: #a5f3fc; }
 
 /* Sobrepõe as larguras nth-child genéricas do doc-list-table */
 .id-fin-table th:nth-child(1),
-.id-fin-table th:nth-child(2) { width: auto; }
+.id-fin-table th:nth-child(2) { width: 200px; }
 .id-fin-table th:nth-child(3),
 .id-fin-table th:nth-child(4),
-.id-fin-table th:nth-child(5) { width: 204px; }
-.id-fin-table th:nth-child(6) { width: 88px; }
+.id-fin-table th:nth-child(5) { width: 140px; }
+.id-fin-table th:nth-child(6) { width: 120px; }
 
-/* Padding reduzido nas células numéricas */
-.id-fin-table tbody td:nth-child(n+3) { padding: 2px 3px; }
+/* Alinhamento vertical e padding das células */
+.id-fin-table tbody td       { vertical-align: middle; padding: 4px; }
+.id-fin-table tbody td:nth-child(6) { padding: 4px 2px; }
 
 .id-fin-wrap .doc-list-table thead th {
   background: #cffafe;
@@ -1403,13 +1409,15 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
 
 .id-fin-input {
   width: 100%;
+  height: 32px;
   border: 1px solid transparent;
   background: transparent;
-  padding: 2px 4px;
+  padding: 0 4px;
   font-size: 12px;
   color: var(--text);
   border-radius: 3px;
   min-width: 0;
+  box-sizing: border-box;
 }
 .id-fin-input:focus {
   outline: none;
@@ -1417,15 +1425,18 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   background: #fff;
 }
 
-.id-col-n    { width: 52px; }
-.id-col-acts { width: 92px; }
+.id-col-n    { width: 28px; }
+.id-col-acts { width: 120px; }
 
 /* célula de ações: calc + add + del alinhados */
 .id-fin-actions {
   display: flex;
   align-items: center;
-  gap: 2px;
-  padding: 2px 4px;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+  height: 32px;
+  margin-top: 4px;
 }
 
 /* botão calcular consumo = qtd × total */
@@ -1433,8 +1444,8 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
   border: 1px solid #a5f3fc;
   border-radius: 4px;
@@ -1451,13 +1462,13 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
   border: 1px solid;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 1;
   padding: 0;
@@ -1468,8 +1479,16 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
 .id-del-btn { border-color: #fca5a5; background: #fee2e2; color: #dc2626; }
 .id-del-btn:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
 
-/* linha de total */
-.id-total-row td { background: #cffafe; font-size: 12px; }
+/* linha de total — congelada na base da tabela */
+.id-total-row td {
+  background: #cffafe;
+  font-size: 12px;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
 .id-total-label  { text-align: right; font-weight: 600; color: #0e7490; padding-right: 8px; }
 .id-total-value  { font-weight: 700; color: #0c4a6e; text-align: right; padding-right: 6px; }
 

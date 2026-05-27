@@ -4,8 +4,10 @@
  * e verificação de atualização de versão. O tema escolhido é persistido
  * em localStorage e reaplicado automaticamente ao iniciar o app.
  */
+
 const SettingsPanel = (() => {
-  let _mounted = false
+  let _mounted    = false
+  let _currentZoom = 1
 
   /** @description Paletas disponíveis com cores de pré-visualização. */
   const _THEMES = [
@@ -45,8 +47,10 @@ const SettingsPanel = (() => {
     _createPanel()
     _bindCloseBtn()
     _bindThemeButtons()
+    _bindFontButtons()
     _bindUpdateButton()
     _loadSavedTheme()
+    _loadSavedFontSize()
     _loadVersion()
     _listenAutoUpdate()
 
@@ -54,6 +58,7 @@ const SettingsPanel = (() => {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && _el('settingsPanel')?.classList.contains('open')) close()
     })
+    window.addEventListener('resize', _compensateWorkspace)
 
     _mounted = true
   }
@@ -113,6 +118,14 @@ const SettingsPanel = (() => {
           `).join('')}
         </div>
 
+        <p class="settings-section-label" style="margin-top:28px">Tamanho de Fonte</p>
+        <div class="settings-font-sizes" id="settingsFontSizes">
+          <button type="button" class="settings-font-btn" data-size="12">A <small>12</small></button>
+          <button type="button" class="settings-font-btn" data-size="14">A <small>14</small></button>
+          <button type="button" class="settings-font-btn" data-size="16">A <small>16</small></button>
+          <button type="button" class="settings-font-btn" data-size="18">A <small>18</small></button>
+        </div>
+
         <p class="settings-section-label" style="margin-top:28px">Colaboradores</p>
         <div class="settings-colaboradores" id="settingsColaboradores">
           <p class="settings-colab-loading" id="settingsColabLoading">Carregando...</p>
@@ -169,6 +182,60 @@ const SettingsPanel = (() => {
     })
   }
 
+  function _bindFontButtons() {
+    _el('settingsFontSizes').querySelectorAll('.settings-font-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const size = btn.dataset.size
+        _applyFontSize(size)
+        _markActiveFont(size)
+        _persistFontSize(size)
+      })
+    })
+  }
+
+  function _applyFontSize(size) {
+    const zoomMap = { '12': 0.90, '14': 1.0, '16': 1.15, '18': 1.30 }
+    _currentZoom = zoomMap[String(size)] || 1
+    document.documentElement.style.zoom = _currentZoom
+    _compensateWorkspace()
+  }
+
+  function _compensateWorkspace() {
+    const ws = document.querySelector('.workspace')
+    if (!ws) return
+    if (_currentZoom === 1) { ws.style.height = ''; return }
+    // 100vh fica com o tamanho não-escalado; compensamos para o workspace
+    // caber exatamente no viewport após o zoom ser aplicado.
+    // topbar-h = 52px (var(--topbar-h))
+    ws.style.height = (window.innerHeight / _currentZoom - 52) + 'px'
+  }
+
+  function _markActiveFont(size) {
+    _el('settingsFontSizes')?.querySelectorAll('.settings-font-btn').forEach(btn => {
+      btn.classList.toggle('settings-font-btn--active', btn.dataset.size === String(size))
+    })
+  }
+
+  async function _persistFontSize(size) {
+    localStorage.setItem('regg-font-size', String(size))
+    try {
+      const s = await window.appService.loadSettings()
+      await window.appService.saveSettings({ ...s, fontSize: String(size) })
+    } catch { }
+  }
+
+  async function _loadSavedFontSize() {
+    let size = '14'
+    try {
+      const s = await window.appService.loadSettings()
+      size = s?.fontSize || localStorage.getItem('regg-font-size') || '14'
+    } catch {
+      size = localStorage.getItem('regg-font-size') || '14'
+    }
+    _applyFontSize(size)
+    _markActiveFont(size)
+  }
+
   /**
    * @description Aplica o tema ao elemento `<html>` via classe CSS.
    * @param {string} themeId
@@ -193,10 +260,11 @@ const SettingsPanel = (() => {
    * @param {string} themeId
    */
   async function _persistTheme(themeId) {
-    localStorage.setItem('reegg-theme', themeId)
+    localStorage.setItem('regg-theme', themeId)
     try {
-      await window.appService.saveSettings({ theme: themeId })
-    } catch { /* ambiente sem IPC ignora silenciosamente */ }
+      const s = await window.appService.loadSettings()
+      await window.appService.saveSettings({ ...s, theme: themeId })
+    } catch { }
   }
 
   /**
@@ -210,10 +278,10 @@ const SettingsPanel = (() => {
       if (settings?.theme) {
         themeId = settings.theme
       } else {
-        themeId = localStorage.getItem('reegg-theme') || 'padrao'
+        themeId = localStorage.getItem('regg-theme') || 'padrao'
       }
     } catch {
-      themeId = localStorage.getItem('reegg-theme') || 'padrao'
+      themeId = localStorage.getItem('regg-theme') || 'padrao'
     }
     _applyTheme(themeId)
     _markActive(themeId)
@@ -323,7 +391,7 @@ const SettingsPanel = (() => {
     table.hidden   = true
 
     try {
-      const session = JSON.parse(localStorage.getItem('reeg_session') || 'null')
+      const session = JSON.parse(localStorage.getItem('regg_session') || 'null')
       const isAdmin = session?.colaborador?.admin === true
 
       const list = await window.colaboradorService.fetchAll()

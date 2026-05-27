@@ -8,6 +8,7 @@
 const ProcessList = (() => {
   let _mounted = false
 
+  
   /**
    * @description Renderiza o componente no container e registra os eventos.
    * @param {HTMLElement} container

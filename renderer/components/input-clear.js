@@ -4,6 +4,7 @@
  * de texto e número que ainda não possuem esse controle. Usa o mesmo padrão
  * visual dos selects: wrapper .search-input-wrap + botão .search-clear.
  */
+
 const InputClear = (() => {
   /** @type {WeakSet<HTMLInputElement>} Impede reprocessamento do mesmo input. */
   const _processed = new WeakSet()

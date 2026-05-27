@@ -9,6 +9,7 @@ const DocumentChartView = (() => {
   let _mounted   = false
   let _container = null
 
+  
   /**
    * @description Renderiza a estrutura do overlay e registra os eventos.
    * @param {HTMLElement} container

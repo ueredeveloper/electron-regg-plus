@@ -10,6 +10,7 @@
  * Escuta:
  *  - `annex-list:select` → preenche formulário e notifica SelectAnnex.
  */
+
 const AnnexView = (() => {
   let _mounted          = false
   let _container        = null

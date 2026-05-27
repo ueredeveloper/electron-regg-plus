@@ -11,6 +11,7 @@
  *  - `interference-list:select` → preenche formulário e notifica SelectInterference.
  */
 
+
 const InterferenceView = (() => {
   let _mounted        = false
   let _container      = null
@@ -372,6 +373,15 @@ const InterferenceView = (() => {
 
     const tipoText       = (_el('ivTipoInterf').selectedOptions[0]?.text ?? '').trim()
     const isSubterranea  = tipoText === 'Subterrânea'
+
+    if (isSubterranea) {
+      const vazaoOutEl = document.getElementById('idVazaoOutorgavel')
+      if (!vazaoOutEl?.value?.trim()) {
+        window.showToast?.('Preencha a Vazão Outorgável antes de salvar.', 'error')
+        vazaoOutEl?.focus()
+        return
+      }
+    }
 
     const payload = {
       latitude:            parseFloat(_el('ivLat').value)  || null,

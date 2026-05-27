@@ -357,6 +357,7 @@ const AvailabilityView = (() => {
     }, true)
   }
 
+  
   /* ── Mapa ───────────────────────────────────────────────────────────────── */
 
   function _drawShape(shape) {

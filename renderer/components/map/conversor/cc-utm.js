@@ -3,6 +3,7 @@
  * @description Painel UTM do conversor de coordenadas. Emite o evento `cc:converted`
  * com `{ lat, lon }` ao realizar a conversão.
  */
+
 const CcUtm = (() => {
   let _container = null
 
@@ -24,7 +25,7 @@ const CcUtm = (() => {
           <label>Zona</label>
           <input type="number" id="ccUtmZone" min="1" max="60" value="23">
         </div>
-        <div class="cc-field narrow">
+        <div class="cc-field dir">
           <label>Hem.</label>
           <select id="ccUtmHem">
             <option value="S">S</option>

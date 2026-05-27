@@ -1,21 +1,22 @@
 {
   "name": "electron-regg",
-  "version": "1.0.6",
+  "version": "1.0.9",
   "description": "Sistema de Registro e Outorga de Recursos Hídricos - Desktop",
   "author": "Fabrício José Barrozo",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
-    "dist": "set CSC_IDENTITY_AUTO_DISCOVERY=false && electron-builder --win portable --publish always"
+    "dist": "node build.js"
   },
   "build": {
-    "appId": "com.ueredeveloper.reegg",
-    "productName": "REEG+",
+    "appId": "com.ueredeveloper.regg",
+    "productName": "REGG+",
     "publish": {
       "provider": "github",
       "owner": "ueredeveloper",
-      "repo": "electron-regg-plus"
+      "repo": "electron-regg-plus",
+      "releaseType": "release"
     },
     "files": [
       "**/*",
@@ -36,7 +37,7 @@
       "icon": "assets/icon.ico"
     },
     "portable": {
-      "artifactName": "REEG+-portable.exe"
+      "artifactName": "REGG+-portable.exe"
     }
   },
   "devDependencies": {
@@ -47,7 +48,6 @@
   "dependencies": {
     "@turf/helpers": "^6.5.0",
     "echarts": "^5.6.0",
-    "electron-updater": "^6.8.3",
     "leaflet": "^1.9.4",
     "turf": "^3.0.14"
   }

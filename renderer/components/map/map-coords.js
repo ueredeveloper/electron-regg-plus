@@ -4,6 +4,7 @@
  * centralizar o mapa no ponto e remover o marcador.
  * Emite `map-coords:center` e `map-coords:remove` para o renderer.js.
  */
+
 const MapCoordsBar = (() => {
   let _mounted = false
   let _container = null

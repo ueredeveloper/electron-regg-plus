@@ -230,7 +230,7 @@ html, body {
   transform: translateX(-50%);
   z-index: 400;
   width: calc(100% - 16px);
-  max-width: 780px;
+  max-width: 1060px;
   pointer-events: none;
 }
 
@@ -320,15 +320,16 @@ html, body {
 .cc-row {
   display: flex;
   align-items: flex-end;
-  justify-content: center;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .cc-field {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
+  min-width: 0;
 }
 
 .cc-field label {
@@ -345,21 +346,25 @@ html, body {
   border-radius: 4px;
   font-size: 12px;
   background: var(--bg);
-  width: 160px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.cc-field.grow input {
-  width: 280px;
+.cc-field.grow {
+  flex: 2;
 }
 
-.cc-field.narrow input,
-.cc-field.narrow select {
-  width: 116px;
+.cc-field.narrow {
+  flex: 0 0 88px;
+}
+
+.cc-field.dir {
+  flex: 0 0 58px;
 }
 
 /* input de segundos (GMS) */
-.cc-field.sec input {
-  width: 152px;
+.cc-field.sec {
+  flex: 1.2;
 }
 
 .cc-convert-btn {

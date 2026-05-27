@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-05-26T19:50:56.128Z",
+  "timestamp": "2026-05-27T00:21:27.540Z",
   "params": {
-    "lat": -15.876809,
-    "lng": -47.444458
+    "lat": -15.952976,
+    "lng": -47.518309
   },
   "result": [
     {
-      "id": 95,
-      "codPlan": "105_35_Bambuí",
-      "sistema": "Bambuí",
-      "subsistema": " ",
-      "vazao": 6
+      "id": 64,
+      "codPlan": "066_22_F",
+      "sistema": "Canastra",
+      "subsistema": "F",
+      "vazao": 7.5
     }
   ]
 }

@@ -33,5 +33,19 @@
         "admin": true
       }
     }
+  },
+  {
+    "timestamp": "2026-05-27T00:19:19.275Z",
+    "email": "fabricio.barrozo@adasa.df.gov.br",
+    "httpStatus": 200,
+    "ok": true,
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImZhYnJpY2lvLmJhcnJvem9AYWRhc2EuZGYuZ292LmJyIiwiYWRtaW4iOnRydWUsImlhdCI6MTc3OTg0MTE2MCwiZXhwIjoxNzc5ODU1NTYwfQ.s-3fdJJupb2SGho-lEIiH_kL96lZ6QRo_b37hEz1DZM",
+      "colaborador": {
+        "id": "1",
+        "email": "fabricio.barrozo@adasa.df.gov.br",
+        "admin": true
+      }
+    }
   }
 ]

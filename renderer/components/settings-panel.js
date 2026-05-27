@@ -49,6 +49,8 @@ const SettingsPanel = (() => {
     _bindThemeButtons()
     _bindFontButtons()
     _bindUpdateButton()
+    _bindDownloadButton()
+    _bindInstallButton()
     _loadSavedTheme()
     _loadSavedFontSize()
     _loadVersion()
@@ -156,6 +158,40 @@ const SettingsPanel = (() => {
             Verificar Atualizações
           </button>
           <p class="settings-update-status" id="settingsUpdateStatus" hidden></p>
+
+          <!-- Botão de download (visível quando update disponível) -->
+          <button type="button" class="btn settings-download-btn" id="settingsDownloadUpdate" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                 style="vertical-align:middle;margin-right:5px">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Baixar e Instalar Atualização
+          </button>
+
+          <!-- Barra de progresso do download -->
+          <div class="settings-progress-wrap" id="settingsProgressWrap" hidden>
+            <div class="settings-progress-track">
+              <div class="settings-progress-bar" id="settingsProgressBar" style="width:0%"></div>
+            </div>
+            <span class="settings-progress-text" id="settingsProgressText">0%</span>
+          </div>
+
+          <!-- Botão de instalar (visível quando download concluído) -->
+          <button type="button" class="btn settings-install-btn" id="settingsInstallUpdate" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                 style="vertical-align:middle;margin-right:5px">
+              <polyline points="23 4 23 10 17 10"/>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              <polyline points="12 5 12 13 16 9"/>
+            </svg>
+            Reiniciar e Atualizar Agora
+          </button>
         </div>
 
       </div>
@@ -298,15 +334,14 @@ const SettingsPanel = (() => {
 
   /**
    * @description Registra o botão de verificar atualizações.
-   * Faz check via IPC e exibe o resultado. Se houver update disponível,
-   * abre a página de download ao clicar no status.
+   * Faz check via IPC e exibe o resultado.
    */
   function _bindUpdateButton() {
     _el('settingsCheckUpdate').addEventListener('click', async () => {
       const btn       = _el('settingsCheckUpdate')
       const origInner = btn.innerHTML
 
-      btn.disabled  = true
+      btn.disabled = true
       const status = _el('settingsUpdateStatus')
       if (status) status.hidden = true
       btn.innerHTML = '<span style="opacity:.65">Verificando...</span>'
@@ -324,9 +359,40 @@ const SettingsPanel = (() => {
   }
 
   /**
+   * @description Registra o botão de download da atualização.
+   */
+  function _bindDownloadButton() {
+    _el('settingsDownloadUpdate').addEventListener('click', async () => {
+      const btn = _el('settingsDownloadUpdate')
+      btn.disabled = true
+      btn.innerHTML = '<span style="opacity:.65">Iniciando download...</span>'
+
+      const wrap = _el('settingsProgressWrap')
+      if (wrap) wrap.hidden = false
+
+      try {
+        await window.appService.startDownload()
+      } catch {
+        _showUpdateResult({ type: 'error', message: 'Erro ao iniciar o download.' })
+        btn.hidden   = false
+        btn.disabled = false
+      }
+    })
+  }
+
+  /**
+   * @description Registra o botão de instalar (reiniciar e atualizar).
+   */
+  function _bindInstallButton() {
+    _el('settingsInstallUpdate').addEventListener('click', () => {
+      window.appService.installUpdate()
+    })
+  }
+
+  /**
    * @description Exibe o resultado de uma verificação de atualização no painel
-   * e, se for update, adiciona badge no botão de configurações.
-   * @param {{ type: string, message: string, url?: string }} result
+   * e, se for update, adiciona badge no botão de configurações e mostra botão de download.
+   * @param {{ type: string, message: string }} result
    */
   function _showUpdateResult(result) {
     const status = _el('settingsUpdateStatus')
@@ -337,35 +403,61 @@ const SettingsPanel = (() => {
 
     if (result.type === 'update') {
       // Badge no botão de configurações da topbar
-      const btn = document.getElementById('btnSettings')
-      if (btn && !btn.querySelector('.settings-update-badge')) {
+      const btnSettings = document.getElementById('btnSettings')
+      if (btnSettings && !btnSettings.querySelector('.settings-update-badge')) {
         const badge = document.createElement('span')
         badge.className   = 'settings-update-badge'
         badge.title       = result.message
         badge.textContent = '!'
-        btn.appendChild(badge)
+        btnSettings.appendChild(badge)
       }
-      // Toast de notificação
-      window.showToast?.(result.message, 'info')
-
-      if (result.url) {
-        // Remove listener anterior para evitar duplicatas
-        const newStatus = status.cloneNode(true)
-        status.parentNode.replaceChild(newStatus, status)
-        newStatus.textContent = result.message
-        newStatus.className   = `settings-update-status settings-update-status--${result.type}`
-        newStatus.hidden      = false
-        newStatus.addEventListener('click', () => window.appService.openExternal(result.url), { once: true })
-      }
+      // Toast de alerta
+      window.showToast?.(`🔔 ${result.message}`, 'info')
+      // Exibe botão de download
+      const dlBtn = _el('settingsDownloadUpdate')
+      if (dlBtn) dlBtn.hidden = false
     }
   }
 
   /**
-   * @description Registra o listener de atualização automática enviada pelo processo main.
-   * Chamado uma vez no mount; exibe resultado quando o main detectar nova versão.
+   * @description Registra os listeners de progresso e conclusão do download.
+   * Chamado uma vez no mount.
    */
   function _listenAutoUpdate() {
+    // Notificação automática de update disponível (disparo do main no startup)
     window.appService?.onUpdateAvailable(result => _showUpdateResult(result))
+
+    // Progresso do download
+    window.appService?.onDownloadProgress(({ percent }) => {
+      const bar  = _el('settingsProgressBar')
+      const text = _el('settingsProgressText')
+      const wrap = _el('settingsProgressWrap')
+      if (wrap) wrap.hidden = false
+      if (bar)  bar.style.width = `${percent}%`
+      if (text) text.textContent = `${percent}%`
+
+      // Oculta botão de download enquanto baixa
+      const dlBtn = _el('settingsDownloadUpdate')
+      if (dlBtn) dlBtn.hidden = true
+    })
+
+    // Download concluído
+    window.appService?.onUpdateDownloaded(({ version }) => {
+      const wrap = _el('settingsProgressWrap')
+      if (wrap) wrap.hidden = true
+
+      const status = _el('settingsUpdateStatus')
+      if (status) {
+        status.textContent = `v${version} baixada e pronta para instalar.`
+        status.className   = 'settings-update-status settings-update-status--ok'
+        status.hidden      = false
+      }
+
+      const installBtn = _el('settingsInstallUpdate')
+      if (installBtn) installBtn.hidden = false
+
+      window.showToast?.(`✅ Atualização v${version} pronta! Clique em "Reiniciar e Atualizar".`, 'info')
+    })
   }
 
   const _ICON_GRANT  = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"

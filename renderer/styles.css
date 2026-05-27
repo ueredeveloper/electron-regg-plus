@@ -2256,6 +2256,69 @@ html.theme-escuro .settings-update-status--ok     { background: #064e3b; color: 
 html.theme-escuro .settings-update-status--update { background: #1e3a5f; color: #93c5fd; }
 html.theme-escuro .settings-update-status--error  { background: #7f1d1d; color: #fca5a5; }
 
+/* Botão de download da atualização */
+.settings-download-btn {
+  align-self: flex-start;
+  background: #1d4ed8 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600;
+  border-radius: 7px;
+  transition: background .15s;
+}
+.settings-download-btn:hover:not(:disabled) { background: #1e40af !important; }
+.settings-download-btn:disabled { opacity: .55; cursor: not-allowed; }
+
+/* Barra de progresso do download */
+.settings-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 2px;
+}
+.settings-progress-track {
+  flex: 1;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.settings-progress-bar {
+  height: 100%;
+  background: #1d4ed8;
+  border-radius: 99px;
+  transition: width .3s ease;
+}
+.settings-progress-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d4ed8;
+  min-width: 36px;
+  text-align: right;
+}
+html.theme-escuro .settings-progress-track   { background: #1e293b; }
+html.theme-escuro .settings-progress-bar     { background: #60a5fa; }
+html.theme-escuro .settings-progress-text    { color: #60a5fa; }
+
+/* Botão de instalar (reiniciar e atualizar) */
+.settings-install-btn {
+  align-self: flex-start;
+  background: #059669 !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 600;
+  border-radius: 7px;
+  animation: pulse-green 1.8s ease-in-out infinite;
+  transition: background .15s;
+}
+.settings-install-btn:hover { background: #047857 !important; animation: none; }
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(5, 150, 105, 0); }
+}
+html.theme-escuro .settings-install-btn { background: #065f46 !important; }
+html.theme-escuro .settings-install-btn:hover { background: #047857 !important; }
+
 /* ── LoginView ─────────────────────────────────────────────────────────────── */
 
 .lv-overlay {

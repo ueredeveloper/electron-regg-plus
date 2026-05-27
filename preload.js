@@ -122,10 +122,14 @@ contextBridge.exposeInMainWorld('colaboradorService', {
 
 /** @description Serviço de aplicativo: versão, atualização e configurações. */
 contextBridge.exposeInMainWorld('appService', {
-  getVersion:        ()         => ipcRenderer.invoke('app:getVersion'),
-  checkUpdate:       ()         => ipcRenderer.invoke('app:checkUpdate'),
-  openExternal:      (url)      => ipcRenderer.invoke('app:openExternal', url),
-  loadSettings:      ()         => ipcRenderer.invoke('app:loadSettings'),
-  saveSettings:      (settings) => ipcRenderer.invoke('app:saveSettings', settings),
-  onUpdateAvailable: (cb)       => ipcRenderer.on('app:update-available', (_e, result) => cb(result))
+  getVersion:          ()         => ipcRenderer.invoke('app:getVersion'),
+  checkUpdate:         ()         => ipcRenderer.invoke('app:checkUpdate'),
+  startDownload:       ()         => ipcRenderer.invoke('app:startDownload'),
+  installUpdate:       ()         => ipcRenderer.invoke('app:installUpdate'),
+  openExternal:        (url)      => ipcRenderer.invoke('app:openExternal', url),
+  loadSettings:        ()         => ipcRenderer.invoke('app:loadSettings'),
+  saveSettings:        (settings) => ipcRenderer.invoke('app:saveSettings', settings),
+  onUpdateAvailable:   (cb) => ipcRenderer.on('app:update-available',   (_e, d) => cb(d)),
+  onDownloadProgress:  (cb) => ipcRenderer.on('app:download-progress',  (_e, d) => cb(d)),
+  onUpdateDownloaded:  (cb) => ipcRenderer.on('app:update-downloaded',  (_e, d) => cb(d))
 })

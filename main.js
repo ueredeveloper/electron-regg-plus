@@ -1,19 +1,40 @@
 const { app, BrowserWindow, ipcMain, screen, shell } = require('electron')
+const { autoUpdater } = require('electron-updater')
 const path = require('path')
 const fs   = require('fs')
 
-const _GH_REPO = 'ueredeveloper/electron-regg-plus'
+// ── Auto-updater ──────────────────────────────────────────────────────────────
+autoUpdater.autoDownload         = false  // usuário decide quando baixar
+autoUpdater.autoInstallOnAppQuit = false  // usuário decide quando instalar
+autoUpdater.logger               = null   // silencioso (erros tratados abaixo)
 
-async function _checkGitHubRelease() {
-  // /releases/latest retorna 404 se não existir nenhuma release publicada;
-  // buscamos a lista e pegamos a primeira não-draft e não-prerelease.
-  const res = await fetch(`https://api.github.com/repos/${_GH_REPO}/releases?per_page=10`)
-  if (!res.ok) throw new Error(`GitHub API ${res.status}`)
-  const list = await res.json()
-  const release = list.find(r => !r.draft && !r.prerelease)
-  if (!release) throw new Error('Nenhuma release publicada encontrada.')
-  return release
-}
+function _getMainWindow() { return BrowserWindow.getAllWindows()[0] ?? null }
+
+autoUpdater.on('update-available', (info) => {
+  _getMainWindow()?.webContents.send('app:update-available', {
+    type:    'update',
+    version: info.version,
+    message: `Nova versão disponível: v${info.version}`
+  })
+})
+
+autoUpdater.on('download-progress', (progress) => {
+  _getMainWindow()?.webContents.send('app:download-progress', {
+    percent:     Math.round(progress.percent),
+    transferred: progress.transferred,
+    total:       progress.total
+  })
+})
+
+autoUpdater.on('update-downloaded', (info) => {
+  _getMainWindow()?.webContents.send('app:update-downloaded', {
+    version: info.version
+  })
+})
+
+autoUpdater.on('error', (err) => {
+  console.error('[autoUpdater]', err?.message ?? err)
+})
 
 // Impede que o DPI scaling do Windows (125%, 150% etc.) amplie a UI do app.
 // O Chromium renderiza em pixels físicos 1:1, ignorando a escala do SO.
@@ -116,21 +137,7 @@ function createWindow() {
   win.once('ready-to-show', () => {
     win.maximize()
     if (app.isPackaged) {
-      setTimeout(async () => {
-        try {
-          const release  = await _checkGitHubRelease()
-          const latest   = release.tag_name?.replace(/^v/, '')
-          const current  = app.getVersion()
-          if (latest && latest !== current) {
-            const asset = release.assets?.find(a => a.name.endsWith('.exe'))
-            const url   = asset?.browser_download_url ?? release.html_url
-            win.webContents.send('app:update-available', {
-              type: 'update', version: latest,
-              message: `Nova versão disponível: v${latest}. Clique para baixar.`, url
-            })
-          }
-        } catch { /* silencioso em background */ }
-      }, 4000)
+      setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 4000)
     }
   })
 }
@@ -259,21 +266,24 @@ ipcMain.handle('app:openExternal', (_event, url) => shell.openExternal(url))
 ipcMain.handle('app:checkUpdate', async () => {
   if (!app.isPackaged) return { type: 'ok', message: 'Modo de desenvolvimento.' }
   try {
-    const release  = await _checkGitHubRelease()
-    const latest   = release.tag_name?.replace(/^v/, '')
-    const current  = app.getVersion()
+    const result  = await autoUpdater.checkForUpdates()
+    const latest  = result?.updateInfo?.version
+    const current = app.getVersion()
     if (latest && latest !== current) {
-      const asset = release.assets?.find(a => a.name.endsWith('.exe'))
-      const url   = asset?.browser_download_url ?? release.html_url
-      return { type: 'update', version: latest, url,
-               message: `Nova versão disponível: v${latest}. Clique para baixar.` }
+      return { type: 'update', version: latest,
+               message: `Nova versão disponível: v${latest}` }
     }
     return { type: 'ok', message: `Você está usando a versão mais recente (v${current}).` }
   } catch (err) {
-    const detail = err?.message ?? String(err)
-    console.error('[app:checkUpdate]', detail)
-    return { type: 'error', message: `Não foi possível verificar atualizações. ${detail}` }
+    console.error('[app:checkUpdate]', err?.message ?? err)
+    return { type: 'error', message: 'Não foi possível verificar atualizações.' }
   }
+})
+
+ipcMain.handle('app:startDownload', () => autoUpdater.downloadUpdate().catch(console.error))
+
+ipcMain.handle('app:installUpdate', () => {
+  autoUpdater.quitAndInstall(false, true)
 })
 
 /* ── App lifecycle ─────────────────────────────────────────────────────────── */

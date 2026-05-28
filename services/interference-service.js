@@ -82,10 +82,6 @@ class InterferenceService {
    */
   async fetchRawByKeyword(keyword) {
 
-    console
-      .log(`[InterferenceService] fetchRawByKeyword: buscando interferências para keyword="${keyword}"...`)
-
-      
     const url = `${BASE_URL}/interferences/search-interferences-by-param?param=${encodeURIComponent(keyword)}`
     const res = await fetch(url, { headers: getAuthHeaders() })
     if (!res.ok) throw new Error(`fetchRawByKeyword: HTTP ${res.status} ${res.statusText}`)
@@ -102,7 +98,6 @@ class InterferenceService {
    */
   async fetchRawByAddressId(addId) {
 
-    console.log(`[InterferenceService] fetchRawByAddressId: buscando interferências para addId=${addId}...`)
     const res = await fetch(
       `${BASE_URL}/interferences/search-interferences-by-address-id?addId=${addId}`,
       { headers: getAuthHeaders() }

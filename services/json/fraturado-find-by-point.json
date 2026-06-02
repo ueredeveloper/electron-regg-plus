@@ -1,16 +1,16 @@
 {
-  "timestamp": "2026-05-27T12:48:22.491Z",
+  "timestamp": "2026-06-02T15:19:06.112Z",
   "params": {
-    "lat": -15.628764,
-    "lng": -47.9309829
+    "lat": -15.618297,
+    "lng": -47.918513
   },
   "result": [
     {
-      "id": 120,
-      "codPlan": "056_18_R3/Q3",
+      "id": 18,
+      "codPlan": "049_15_R4",
       "sistema": "Paranoá",
-      "subsistema": "R3/Q3",
-      "vazao": 12
+      "subsistema": "R4",
+      "vazao": 6.5
     }
   ]
 }

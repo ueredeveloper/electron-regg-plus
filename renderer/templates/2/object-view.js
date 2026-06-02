@@ -68,6 +68,11 @@ class ObjectView {
 			element.textContent = new InterferenciaModel().getTipoPoco(interferencia)
 		});
 
+		// Tipo de Outorga
+		let ______items = document.getElementsByClassName('inter-tipo-outorga');
+		Array.from(______items).forEach(element => {
+			element.innerHTML = interferencia?.tipoOutorga?.descricao?.toLowerCase() || 'XXX';
+		});
 
 	}
 }

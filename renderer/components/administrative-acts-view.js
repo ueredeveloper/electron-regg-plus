@@ -17,13 +17,29 @@ const AdministrativeActsView = (() => {
   const _TIPO_POCO_MAP = { 1: 'Manual', 2: 'Tubular Raso', 3: 'Tubular Profundo' }
 
   const _TEMPLATES = [
-    { dir: 1, nome: 'Outorga Prévia' },
-    { dir: 2, nome: 'Parecer de Outorga Prévia' },
-    { dir: 3, nome: 'Outorga De Direito de Uso' },
-    { dir: 4, nome: 'Parecer de Outorga De Direito de Uso' },
-    { dir: 5, nome: 'Registro de Uso Subterrâneo' },
-    { dir: 6, nome: 'Outorga Prévia - Poço Raso' },
+    { dir: 1, nome: 'Outorga Prévia',                                        tipo: 'previa'    },
+    { dir: 2, nome: 'Parecer de Outorga Prévia',                             tipo: 'previa'    },
+    { dir: 3, nome: 'Outorga De Direito de Uso',                             tipo: 'direito'   },
+    { dir: 4, nome: 'Parecer de Outorga De Direito de Uso',                  tipo: 'direito'   },
+    { dir: 5, nome: 'Registro de Uso Subterrâneo',                           tipo: 'registro'  },
+    { dir: 6, nome: 'Outorga Prévia - Poço Raso',                            tipo: 'previa'    },
+    { dir: 7, nome: 'Despacho de Renovação de Outorga de Direito de Uso',    tipo: 'renovacao'     },
+    { dir: 8, nome: 'Parecer de Renovação de Outorga de Direito de Uso',     tipo: 'renovacao'     },
+    { dir: 9,  nome: 'Despacho de Indeferimento de Outorga',                   tipo: 'indeferimento' },
+    { dir: 10, nome: 'Despacho de Transferência de Outorga de Direito de Uso', tipo: 'transferencia' },
+    { dir: 11, nome: 'Parecer de Transferência de Outorga de Direito de Uso',  tipo: 'transferencia' },
+    { dir: 12, nome: 'Despacho de Modificação de Outorga de Direito de Uso',   tipo: 'modificacao'   },
   ]
+
+  const _TEMPLATE_COLORS = {
+    previa:        { bg: '#d4edda', color: '#155724' },
+    direito:       { bg: '#cce5ff', color: '#004085' },
+    registro:      { bg: '#fff3cd', color: '#856404' },
+    renovacao:     { bg: '#f8d7da', color: '#721c24' },
+    indeferimento: { bg: '#e2e3e5', color: '#383d41' },
+    transferencia: { bg: '#fde8d8', color: '#7c3400' },
+    modificacao:   { bg: '#ede0f8', color: '#4a0084' },
+  }
 
   /* ── Mount ──────────────────────────────────────────────────────────────── */
 
@@ -104,7 +120,10 @@ const AdministrativeActsView = (() => {
                 <label for="aaTemplate">Modelo</label>
                 <select id="aaTemplate">
                   <option value="">Selecione o modelo...</option>
-                  ${_TEMPLATES.map(t => `<option value="${t.dir}">${t.nome}</option>`).join('')}
+                  ${_TEMPLATES.map(t => {
+                    const { bg, color } = _TEMPLATE_COLORS[t.tipo]
+                    return `<option value="${t.dir}" style="background-color:${bg};color:${color}">${t.nome}</option>`
+                  }).join('')}
                 </select>
               </div>
             </div>

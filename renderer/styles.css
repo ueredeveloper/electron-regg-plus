@@ -2143,6 +2143,22 @@ td:not(.doc-list-action-cell) { cursor: pointer; }
   padding: 6px 0;
 }
 .settings-colab-error { color: #e74c3c; }
+.settings-colab-search {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 13px;
+  background: var(--input-bg, #fff);
+  color: var(--text);
+}
+.settings-colab-search:focus {
+  outline: none;
+  border-color: var(--accent, #4a90d9);
+}
 .settings-colab-table-wrap {
   max-height: 300px;
   overflow-y: auto;

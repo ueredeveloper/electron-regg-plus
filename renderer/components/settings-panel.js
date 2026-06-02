@@ -133,6 +133,8 @@ const SettingsPanel = (() => {
           <p class="settings-colab-loading" id="settingsColabLoading">Carregando...</p>
           <p class="settings-colab-error"   id="settingsColabError"   hidden></p>
           <div class="settings-colab-table-wrap" id="settingsColabTable" hidden>
+            <input type="text" id="settingsColabSearch" placeholder="Buscar por e-mail..."
+                   class="settings-colab-search">
             <table class="settings-colab-table">
               <thead>
                 <tr><th>E-mail</th><th>Autorizado</th><th></th></tr>
@@ -518,6 +520,18 @@ const SettingsPanel = (() => {
 
       loading.hidden = true
       table.hidden   = false
+
+      const search = _el('settingsColabSearch')
+      if (search) {
+        search.value = ''
+        search.oninput = () => {
+          const term = search.value.toLowerCase()
+          tbody.querySelectorAll('tr').forEach(tr => {
+            const email = tr.querySelector('td')?.textContent?.toLowerCase() || ''
+            tr.hidden = term !== '' && !email.includes(term)
+          })
+        }
+      }
     } catch (err) {
       loading.hidden      = true
       error.hidden        = false

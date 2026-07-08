@@ -1,8 +1,8 @@
-/**
+﻿/**
  * @arquivo script.js
  * @diretorio 8
  * @descricao Arquivo principal .js
- * @nome Parecer de Renovação de Outorga de Direito de Uso
+ * @nome Parecer de Renovação de Outorga
  * @id
  *
  *

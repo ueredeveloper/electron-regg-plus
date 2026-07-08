@@ -1,7 +1,7 @@
-/**
- * @nome Despacho de Modificação de Outorga de Direito de Uso
+﻿/**
+ * @nome Outorga de Modificação
  * @descricao Obrigações do usuário
- * @diretorio 12
+ * @diretorio 11
  * @arquivo grant-requirements-view.js
  * @id
  */

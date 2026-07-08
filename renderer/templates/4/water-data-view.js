@@ -1,6 +1,6 @@
-/**
+﻿/**
  * @id 
- * @nome Parecer de Outorga De Direito de Uso
+ * @nome Parecer de Outorga de Direito de Uso
  * @descricao Análise do parecer
  * @diretorio 4
  * @arquivo water-data-view.js

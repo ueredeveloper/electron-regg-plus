@@ -1,6 +1,6 @@
-/**
+﻿/**
  * @diretorio 3
- * @nome Outorga De Direito de Uso
+ * @nome Outorga de Direito de Uso
  * @descricao Obrigações do usuário
  * @arquivo grant-requirements-view.js
  * @id 

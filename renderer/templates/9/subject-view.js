@@ -1,5 +1,5 @@
-/**
-* @nome Despacho de Indeferimento de Outorga
+﻿/**
+* @nome Outorga de Indeferimento
 * @descricao Assunto do Despacho
 * @diretorio 9
 * @arquivo subject-view.js

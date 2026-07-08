@@ -1,5 +1,5 @@
-/**
-* @nome Parecer de Renovação de Outorga de Direito de Uso
+﻿/**
+* @nome Parecer de Renovação de Outorga
 * @descricao Conclusão do parecer
 * @diretorio 8
 * @arquivo conclusion-view.js

@@ -1,5 +1,5 @@
-/**
- * @nome Despacho de Indeferimento de Outorga
+﻿/**
+ * @nome Outorga de Indeferimento
  * @descricao Arquivo principal .js
  * @diretorio 9
  * @arquivo script.js

@@ -1,5 +1,5 @@
-/**
-* @nome Despacho de Renovação de Outorga de Direito de Uso
+﻿/**
+* @nome Outorga de Renovação
 * @descricao Assunto do Despacho
 * @diretorio 7
 * @arquivo subject-view.js

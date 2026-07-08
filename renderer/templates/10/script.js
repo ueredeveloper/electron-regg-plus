@@ -1,5 +1,5 @@
-/**
- * @nome Despacho de Transferência de Outorga de Direito de Uso
+﻿/**
+ * @nome Outorga de Transferência
  * @descricao Arquivo principal .js
  * @diretorio 10
  * @arquivo script.js

@@ -1,5 +1,5 @@
-/**
-* @nome Parecer de Renovação de Outorga de Direito de Uso
+﻿/**
+* @nome Parecer de Renovação de Outorga
 * @descricao Base legal do parecer
 * @diretorio 8
 * @arquivo legal-basis-view.js

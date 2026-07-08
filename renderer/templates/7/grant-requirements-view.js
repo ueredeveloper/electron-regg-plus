@@ -1,6 +1,6 @@
-/**
+﻿/**
  * @diretorio 7
- * @nome Despacho de Renovação de Outorga de Direito de Uso
+ * @nome Outorga de Renovação
  * @descricao Obrigações do usuário
  * @arquivo grant-requirements-view.js
  * @id

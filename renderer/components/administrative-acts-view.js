@@ -19,16 +19,15 @@ const AdministrativeActsView = (() => {
   const _TEMPLATES = [
     { dir: 1, nome: 'Outorga Prévia',                                        tipo: 'previa'    },
     { dir: 2, nome: 'Parecer de Outorga Prévia',                             tipo: 'previa'    },
-    { dir: 3, nome: 'Outorga De Direito de Uso',                             tipo: 'direito'   },
-    { dir: 4, nome: 'Parecer de Outorga De Direito de Uso',                  tipo: 'direito'   },
+    { dir: 3, nome: 'Outorga de Direito de Uso',                             tipo: 'direito'   },
+    { dir: 4, nome: 'Parecer de Outorga de Direito de Uso',                  tipo: 'direito'   },
     { dir: 5, nome: 'Registro de Uso Subterrâneo',                           tipo: 'registro'  },
     { dir: 6, nome: 'Outorga Prévia - Poço Raso',                            tipo: 'previa'    },
-    { dir: 7, nome: 'Despacho de Renovação de Outorga de Direito de Uso',    tipo: 'renovacao'     },
-    { dir: 8, nome: 'Parecer de Renovação de Outorga de Direito de Uso',     tipo: 'renovacao'     },
-    { dir: 9,  nome: 'Despacho de Indeferimento de Outorga',                   tipo: 'indeferimento' },
-    { dir: 10, nome: 'Despacho de Transferência de Outorga de Direito de Uso', tipo: 'transferencia' },
-    { dir: 11, nome: 'Parecer de Transferência de Outorga de Direito de Uso',  tipo: 'transferencia' },
-    { dir: 12, nome: 'Despacho de Modificação de Outorga de Direito de Uso',   tipo: 'modificacao'   },
+    { dir: 7, nome: 'Outorga de Renovação',                                  tipo: 'renovacao'     },
+    { dir: 8, nome: 'Parecer de Renovação de Outorga',                       tipo: 'renovacao'     },
+    { dir: 9,  nome: 'Outorga de Indeferimento',                              tipo: 'indeferimento' },
+    { dir: 10, nome: 'Outorga de Transferência',                              tipo: 'transferencia' },
+    { dir: 11, nome: 'Outorga de Modificação',                                tipo: 'modificacao'   },
   ]
 
   const _TEMPLATE_COLORS = {

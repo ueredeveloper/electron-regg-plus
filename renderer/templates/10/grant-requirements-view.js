@@ -1,5 +1,5 @@
-/**
- * @nome Despacho de Transferência de Outorga de Direito de Uso
+﻿/**
+ * @nome Outorga de Transferência
  * @descricao Obrigações do usuário
  * @diretorio 10
  * @arquivo grant-requirements-view.js

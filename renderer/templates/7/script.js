@@ -1,5 +1,5 @@
-/**
- * @nome Despacho de Renovação de Outorga de Direito de Uso
+﻿/**
+ * @nome Outorga de Renovação
  * @descricao Arquivo principal .js
  * @diretorio 7
  * @arquivo script.js

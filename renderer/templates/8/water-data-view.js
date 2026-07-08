@@ -1,6 +1,6 @@
-/**
+﻿/**
  * @id
- * @nome Parecer de Renovação de Outorga de Direito de Uso
+ * @nome Parecer de Renovação de Outorga
  * @descricao Dados hídricos do parecer
  * @diretorio 8
  * @arquivo water-data-view.js

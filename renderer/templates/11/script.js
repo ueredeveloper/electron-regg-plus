@@ -1,8 +1,8 @@
-/**
- * @arquivo script.js
- * @diretorio 11
+﻿/**
+ * @nome Outorga de Modificação
  * @descricao Arquivo principal .js
- * @nome Parecer de Transferência de Outorga de Direito de Uso
+ * @diretorio 11
+ * @arquivo script.js
  * @id
  */
 
@@ -11,33 +11,40 @@ function App() {
 	const appDiv = document.getElementById("app");
 
 	appDiv.innerHTML = `
-			<div style="display:flex; flex-direction:column">
-				<div id="subject-view"></div>
-				<br>
-				<div id="object-view"></div>
-				<br>
-				<div id="legal-basis-view"></div>
-				<br>
-				<div id="analyse-view"></div>
-				<br>
-				<div id="conclusion-view"></div>
-				<br>
-				<div id="signature-view"></div>
-			</div>
-			`;
+		<div style="display:flex;flex-direction:column;">
+			<div id="subject-view"></div>
+			<div id="object-view"></div>
 
-	new SubjectView();
-	new ObjectView();
-	new LegalBasisView();
-	new AnalyseView();
-	new ConclusionView();
-	new SignatureView();
+			<div align="justify" id="geographic-table-view"></div>
+
+			<p>Art. 2º A demanda outorgada mencionada no art. 1º é a seguinte:</p>
+
+			<b>I – Tabela dos limites outorgados.</b>
+
+			<p>&nbsp;</p>
+
+			<div id="limits-table-view"></div>
+
+			<p>&nbsp;</p>
+
+			<div id="grant-requirements"></div>
+			<div id="chief-signature-view"></div>
+		</div>`;
 }
 
 var documento;
 var utils;
 
 document.addEventListener('DOMContentLoaded', function () {
-	utils = new Utils();
+
 	App();
+
+	utils = new Utils();
+
+	new SubjectView();
+	new ObjectView();
+	new LimitsTableView();
+	new GrantRequirementsView();
+	new ChiefSignatureView();
+
 });

@@ -1,5 +1,5 @@
- /**
- * @nome Outorga De Direito de Uso
+﻿ /**
+ * @nome Outorga de Direito de Uso
  * @descricao Arquivo principal .js
  * @diretorio 3
  * @arquivo script.js

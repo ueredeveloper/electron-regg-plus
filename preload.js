@@ -104,7 +104,8 @@ contextBridge.exposeInMainWorld('coordService', {
 
 /** @description Sincroniza o token JWT com o processo main. */
 contextBridge.exposeInMainWorld('authService', {
-  setToken: (token) => ipcRenderer.invoke('auth:setToken', token)
+  setToken:  (token) => ipcRenderer.invoke('auth:setToken', token),
+  onExpired: (cb)    => ipcRenderer.on('auth:expired', () => cb())
 })
 
 /** @description Serviço de análise de disponibilidade hídrica subterrânea. */

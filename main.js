@@ -61,17 +61,44 @@ const CoordConverter           = require('./utils/coord-converter')
 const ColaboradorService       = require('./services/colaborador-service')
 const AvailabilityService      = require('./services/availability-service')
 const authStore                = require('./utils/auth-store')
+const jwt                      = require('./utils/jwt')
 
-/* ── Interceptor global de fetch: injeta Bearer token em todas as requisições ── */
+/**
+ * @description Encerra a sessão no processo main e avisa o renderer para
+ * reabrir a tela de login. Chamado quando o token expira (proativamente,
+ * via claim `exp`) ou quando o backend responde 401 (reativamente).
+ */
+function _forceReauth() {
+  authStore.setToken('')
+  _getMainWindow()?.webContents.send('auth:expired')
+}
+
+/* ── Interceptor global de fetch: injeta Bearer token e detecta expiração ──── */
 ;(() => {
   const _nativeFetch = globalThis.fetch
-  globalThis.fetch = function (url, options = {}) {
+  const _isAuthEndpoint = (url) => /\/colaboradores\/(login|upsert-colaborador)\b/.test(String(url))
+
+  globalThis.fetch = async function (url, options = {}) {
+    const isGithub = String(url).includes('github.com')
+    const isAuthEndpoint = _isAuthEndpoint(url)
     const token = authStore.getToken()
-    if (token && !String(url).includes('github.com')) {
-      options = { ...options }
-      options.headers = { Authorization: `Bearer ${token}`, ...(options.headers || {}) }
+
+    if (token && !isGithub) {
+      if (!isAuthEndpoint && jwt.isExpired(token)) {
+        _forceReauth()
+      } else {
+        options = { ...options }
+        options.headers = { Authorization: `Bearer ${token}`, ...(options.headers || {}) }
+      }
     }
-    return _nativeFetch(url, options)
+
+    const res = await _nativeFetch(url, options)
+
+    if (res.status === 401 && !isGithub && !isAuthEndpoint) {
+      _forceReauth()
+    }
+
+    return res
   }
 })()
 

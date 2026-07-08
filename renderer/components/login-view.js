@@ -22,6 +22,23 @@ const LoginView = (() => {
     try { return JSON.parse(localStorage.getItem(SESSION_KEY)) } catch { return null }
   }
 
+  /**
+   * @description Verifica localmente (via claim `exp`) se um JWT já expirou,
+   * sem precisar de uma chamada ao backend. Usado ao iniciar o app para não
+   * mostrar a tela principal com uma sessão morta.
+   * @param {string} token
+   * @returns {boolean}
+   */
+  function _isTokenExpired(token) {
+    try {
+      const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
+      const { exp }  = JSON.parse(atob(payload))
+      return !exp || Date.now() >= exp * 1000
+    } catch {
+      return true
+    }
+  }
+
   /** @param {{ token: string, colaborador: object } | null} data */
   function _setSession(data) {
     if (data) localStorage.setItem(SESSION_KEY, JSON.stringify(data))
@@ -260,15 +277,20 @@ const LoginView = (() => {
     }
 
     const session = getSession()
-    if (session?.token) {
+    if (session?.token && !_isTokenExpired(session.token)) {
       window.authService?.setToken(session.token)
       _canClose = true
     } else {
+      const hadExpiredSession = !!session?.token
+      if (hadExpiredSession) _setSession(null)
       _canClose = false
       open()
+      if (hadExpiredSession) window.showToast?.('Sua sessão expirou. Faça login novamente.', 'error')
     }
     _syncTopbarBtn()
     _refreshSessionPanel()
+
+    window.authService?.onExpired(_onTokenExpired)
   }
 
   /* ── Eventos ────────────────────────────────────────────────────────────── */
@@ -450,15 +472,31 @@ document.getElementById('lvClose').addEventListener('click', () => {
   /* ── Logout ─────────────────────────────────────────────────────────────── */
 
   /**
-   * @description Encerra a sessão ativa: remove o token e força nova autenticação.
+   * @description Remove a sessão ativa e reabre o modal de login.
    * Mantém as credenciais salvas (e-mails/senhas) intactas.
    */
-  function _logout() {
+  function _endSession() {
     _setSession(null)
     _canClose = false
     _syncTopbarBtn()
     _refreshSessionPanel()
     open()
+  }
+
+  /** @description Logout manual (clique no botão "Sair"). */
+  function _logout() {
+    _endSession()
+  }
+
+  /**
+   * @description Chamado quando o processo main detecta que o token JWT
+   * expirou (claim `exp`) ou o backend respondeu 401. Encerra a sessão
+   * local e reabre o modal para que o usuário faça login novamente.
+   */
+  function _onTokenExpired() {
+    if (!getSession()) return
+    _endSession()
+    window.showToast?.('Sua sessão expirou. Faça login novamente.', 'error')
   }
 
   /* ── Público ────────────────────────────────────────────────────────────── */

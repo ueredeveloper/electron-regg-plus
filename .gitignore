@@ -30,3 +30,6 @@ dist/
 
 # Oculta a lista de afazeres
 to-do-list.md
+
+# Logs de depuração de serviços (contêm tokens JWT e dados de login)
+services/json/

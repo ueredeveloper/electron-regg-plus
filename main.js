@@ -94,7 +94,10 @@ function _forceReauth() {
 
     const res = await _nativeFetch(url, options)
 
-    if (res.status === 401 && !isGithub && !isAuthEndpoint) {
+    // Só força reauth se o token ainda for o mesmo usado nesta requisição:
+    // evita que uma resposta 401 de uma chamada antiga (feita antes de um
+    // login bem-sucedido) derrube a sessão recém-criada.
+    if (res.status === 401 && !isGithub && !isAuthEndpoint && authStore.getToken() === token) {
       _forceReauth()
     }
 

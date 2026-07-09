@@ -40,10 +40,10 @@ const LoginView = (() => {
   }
 
   /** @param {{ token: string, colaborador: object } | null} data */
-  function _setSession(data) {
+  async function _setSession(data) {
     if (data) localStorage.setItem(SESSION_KEY, JSON.stringify(data))
     else       localStorage.removeItem(SESSION_KEY)
-    window.authService?.setToken(data?.token || '')
+    await window.authService?.setToken(data?.token || '')
   }
 
   /* ── Credenciais salvas ─────────────────────────────────────────────────── */
@@ -354,7 +354,7 @@ document.getElementById('lvClose').addEventListener('click', () => {
       try {
         const data = await window.colaboradorService.login(email, pass)
         if (data?.token) {
-          _setSession(data)
+          await _setSession(data)
           _saveCredential(email, pass)
           _canClose = true
           _syncTopbarBtn()
